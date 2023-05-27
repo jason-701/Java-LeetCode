@@ -1,7 +1,9 @@
 public class Main{
     public static void main(String[] args) {
         System.out.println("Hello");        
+        int[] test = {1,0,0,0,0};
         functions foo = new functions();
-        String result = foo.gcdOfStrings("AB","ABABABAB");
+        System.out.println(foo.canPlaceFlowers(test,2));
+
     }
 }
