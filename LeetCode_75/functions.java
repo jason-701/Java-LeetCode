@@ -20,9 +20,9 @@ public class functions {
         System.out.println(result);
 
     }
-    public String gcdOfStrings(String str1, String str2) {
-        int len1 = str1.length();
-        int len2 = str2.length();
+    public String gcdOfStrings(String str1, String str2) {  //this is actually pretty cool
+        int len1 = str1.length();                           // the greatest common string divisor for 2 strings is the same
+        int len2 = str2.length();                           // length as the gcd of the length of the 2 strings
         int common_den = gcd(len1, len2);
         String test  =str1.substring(0, common_den);
         String combined = str1 + str2;
