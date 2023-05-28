@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class functions {
@@ -104,5 +105,49 @@ public class functions {
         else{
             return false;
         }
+    }
+
+    public String reverseVowels(String s) {// String type is immutable, so we use StringBuilder instead
+        /*List<Character> vowels = new ArrayList<>(Arrays.asList('a','A','e','E','i','I','o','O','u','U'));
+        ArrayList<Character> vowelsInString = new ArrayList<>();
+        int i = 0;
+        while (i<s.length()){
+            if (vowels.contains(s.charAt(i))){
+                vowelsInString.add(s.charAt(i));
+            }
+            i++;
+        }
+        i=0;
+        int j = vowelsInString.size()-1;
+        StringBuilder newString = new StringBuilder(s);
+        while(i<s.length()){
+            if (vowels.contains(s.charAt(i))){
+                newString.setCharAt(i, vowelsInString.get(j));
+                j--;
+            }
+            i++;
+        }
+        return newString.toString();*/
+        
+        //nvm i'm just stupid we can just use pointers
+        List<Character> vowels = new ArrayList<>(Arrays.asList('a','A','e','E','i','I','o','O','u','U'));
+        char[] stringArray = s.toCharArray();
+        int start = 0;
+        int end = stringArray.length-1;
+        while (start<end){
+            while(start<end && !(vowels.contains(stringArray[start]))){
+                start++;
+            }
+            while(start<end && !(vowels.contains(stringArray[end]))){
+                end--;
+            }
+            char temp = stringArray[start];
+            stringArray[start]=stringArray[end];
+            stringArray[end]=temp;
+            start++;
+            end--;
+        }
+        String finalResult = new String(stringArray);
+        return finalResult;
     }
 }
