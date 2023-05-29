@@ -1,8 +1,7 @@
 public class Main{
     public static void main(String[] args) {
-        System.out.println("Hello");        
-        int[] test = {1,0,0,0,0};
-        functions foo = new functions();
-        foo.reverseVowels("Hello");
+        array_string foo = new array_string();
+        foo.reverseWords("A Hello     World");
+        System.out.println(foo.reverseWords("A Hello     World"));
     }
 }
