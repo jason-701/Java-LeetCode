@@ -180,8 +180,8 @@ public class array_string {
     }
 
     public int[] productExceptSelf(int[] nums) {
-        int[] left = new int[nums.length];
-        int[] right = new int[nums.length];
+        int[] left = new int[nums.length]; //left[i] is the product of all elements on the left of left[i]
+        int[] right = new int[nums.length]; //right[i] is the product of all elements on the right of right[i]
 
         for (int i = 0; i < left.length; i++) {
             left[i]=1;
@@ -202,5 +202,25 @@ public class array_string {
             result[i] = left[i]*right[i];
         }
         return result;
+    }
+
+    public boolean increasingTriplet(int[] nums) {
+        int min1; //tracks the smallest number so far
+        long min2; //tracks the second smallest number so far
+        min1=nums[0];
+        min2=2147483648L;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i]<min1){
+                min1=nums[i];
+            }
+            else if(nums[i]<min2 && nums[i]>min1){
+                min2=nums[i];
+            }
+            else if (nums[i]>min2 && min2>min1){
+                return true;
+            }   //while iterating, if there exists a number greater than min1 and min2, then a increasing triplet exists
+        }
+        return false;
     }
 }
