@@ -223,4 +223,28 @@ public class array_string {
         }
         return false;
     }
+
+    public int compress(char[] chars) {
+        int indexOfAns, index;
+        index=indexOfAns=0;
+        while (index < chars.length){
+            char currentChar = chars[index];
+            int count = 0;
+            //  tracks how many repeat characters are there
+            while(index < chars.length && chars[index]==currentChar){
+                count++;
+                index++;
+            }
+            chars[indexOfAns++]=currentChar;
+
+            //  converts to char array so that multi-digit numbers can be separated
+            //  e.g. 12 = '1' + '2'
+            if (count!=1){
+                for (char c : Integer.toString(count).toCharArray()){
+                    chars[indexOfAns++]=c;
+                }
+            }
+        }
+        return indexOfAns;
+    }
 }
