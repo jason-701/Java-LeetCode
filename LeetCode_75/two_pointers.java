@@ -32,11 +32,14 @@ public class two_pointers {
         return false;   
     }
 
+    //  given an int array, find the max area that can be formed from the x-asis (index) and the y-axis (height[index])
     public int maxArea(int[] height) {
         int leftIndex, rightIndex,curMax;
         leftIndex = curMax = 0;
         rightIndex = height.length-1;
         while (leftIndex<rightIndex){
+            //  idea is that the lower one between height[leftIndex] and height[rightindex] won't be able to form
+            //  an area that is greater than the current one, hence we remove that index
             curMax = Math.max(curMax, (rightIndex-leftIndex) * (Math.min(height[leftIndex], height[rightIndex])));
             if (height[leftIndex] > height[rightIndex]){
                 rightIndex--;
