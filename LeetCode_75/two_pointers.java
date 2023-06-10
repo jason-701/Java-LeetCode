@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 public class two_pointers {
     //  move all 0s in an array to the end
     public void moveZeroes(int[] nums) { 
@@ -28,5 +30,21 @@ public class two_pointers {
             t_index++;
         }
         return false;   
+    }
+
+    public int maxArea(int[] height) {
+        int leftIndex, rightIndex,curMax;
+        leftIndex = curMax = 0;
+        rightIndex = height.length-1;
+        while (leftIndex<rightIndex){
+            curMax = Math.max(curMax, (rightIndex-leftIndex) * (Math.min(height[leftIndex], height[rightIndex])));
+            if (height[leftIndex] > height[rightIndex]){
+                rightIndex--;
+            }
+            else{
+                leftIndex++;
+            }
+        }
+        return curMax;
     }
 }
