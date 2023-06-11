@@ -1,7 +1,8 @@
 public class Main{
     public static void main(String[] args) {
-        two_pointers test = new two_pointers();
-        int[] test_array = {3,1,3,4,3};
-        System.out.println(test.maxOperations(test_array,6));
+        int[] test_array = {0,4,0,3,2};
+        sliding_window test = new sliding_window();
+        System.out.println(test.findMaxAverage(test_array, 1));
+
     }
 }
