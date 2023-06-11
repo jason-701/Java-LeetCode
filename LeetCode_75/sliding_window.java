@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class sliding_window {
     
     //  find sub-array of length k with max average
@@ -19,5 +23,33 @@ public class sliding_window {
             System.out.println(curMax);
         }
         return curMax/k;
+    }
+
+    //  find max number of vowels in a substring
+    public int maxVowels(String s, int k) {
+        List<Character> vowels = new ArrayList<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
+        int maxCount = 0;
+
+        //  calculate no. of vowels in initial sub-window
+        for (int i = 0; i < k; i++) {
+            if (vowels.contains(s.charAt(i))){
+                maxCount++;
+            }
+        }
+
+        //  calculate no of vowels in subsequent sub-window and update results
+        int count = maxCount;
+        for (int i = k; i < s.length(); i++) {
+            if (vowels.contains(s.charAt(i-k))){
+                count--;
+            }
+            if (vowels.contains(s.charAt(i))){
+                count++;
+            }
+            if (count > maxCount){
+                maxCount = count;
+            }
+        }
+        return maxCount;
     }
 }
