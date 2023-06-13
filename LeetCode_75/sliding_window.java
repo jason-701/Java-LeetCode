@@ -81,7 +81,7 @@ public class sliding_window {
             }
         }
 
-        //  have to take into account if the entire array fits the criteria, as shown by end - start
+    //  have to take into account if the entire array fits the criteria, as shown by end - start
         return curMax > (end - start) ? curMax : (end - start);
     }
 
