@@ -8,12 +8,12 @@ public class sliding_window {
     public double findMaxAverage(int[] nums, int k) {
         double curMax = 0;
         
-        //  compute sum of first sliding window
+    //  compute sum of first sliding window
         for (int i = 0; i < k; i++) {
             curMax += nums[i];
         }
 
-        //  calculate sum of subsequent window, update max sum when necessary
+    //  calculate sum of subsequent window, update max sum when necessary
         double temp = curMax;
         for (int i = k; i < nums.length; i++) {
             temp = temp - nums[i-k] + nums[i];
@@ -30,14 +30,14 @@ public class sliding_window {
         List<Character> vowels = new ArrayList<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
         int maxCount = 0;
 
-        //  calculate no. of vowels in initial sub-window
+    //  calculate no. of vowels in initial sub-window
         for (int i = 0; i < k; i++) {
             if (vowels.contains(s.charAt(i))){
                 maxCount++;
             }
         }
 
-        //  calculate no of vowels in subsequent sub-window and update results
+    //  calculate no of vowels in subsequent sub-window and update results
         int count = maxCount;
         for (int i = k; i < s.length(); i++) {
             if (vowels.contains(s.charAt(i-k))){
@@ -58,16 +58,17 @@ public class sliding_window {
         int start, end, zeroCount, curMax;
         start = end = zeroCount = curMax = 0;
         while (end < nums.length){
+    //  expand the window if the new number is a 1
             if (nums[end] == 1 && zeroCount <= k){
                 end++;
             }
             else{
-                //  if less than max number of 0s allowed, window size still can expand
+    //  if less than max number of 0s allowed, window size still can expand
                 if (zeroCount < k){
                     end++;
                     zeroCount++;
                 }
-                //  max number of 0s reached, move the sliding window
+    //  max number of 0s reached, move the sliding window
                 else{
                     if (curMax < (end - start)){
                         curMax =  end - start;
@@ -82,5 +83,38 @@ public class sliding_window {
 
         //  have to take into account if the entire array fits the criteria, as shown by end - start
         return curMax > (end - start) ? curMax : (end - start);
+    }
+
+    //  longest sub-array of only 1s after deleting one element
+    //  extremely similar to the question above with a constraint of one 0 allowed
+    public int longestSubarray(int[] nums) {
+        int start, end, zeroCount, curMax;
+        start = end = zeroCount = curMax = 0;
+        while (end < nums.length){
+
+    //  expand the window if the new number is a 1
+            if (nums[end] == 1 && zeroCount <= 1){
+                end++;
+            }
+    //  if less than max number of 0s allowed, window size still can expand
+            else{
+                if (zeroCount != 1){
+                    end++;
+                    zeroCount++;
+                }
+    //  max number of 0s reached, move the sliding window
+                else{
+                    if (curMax < (end - start)){
+                        curMax = end - start;
+                    }
+
+                    if (nums[start] == 0){
+                        zeroCount--;
+                    }
+                    start++;
+                }
+            }
+        }
+        return curMax > (end - start) ? (curMax-1) : (end - start - 1);
     }
 }
