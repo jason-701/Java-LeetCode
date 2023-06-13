@@ -52,4 +52,35 @@ public class sliding_window {
         }
         return maxCount;
     }
+
+    //  find max consecutive 1s in an array if you can flip a certain number of 0s
+    public int longestOnes(int[] nums, int k) {
+        int start, end, zeroCount, curMax;
+        start = end = zeroCount = curMax = 0;
+        while (end < nums.length){
+            if (nums[end] == 1 && zeroCount <= k){
+                end++;
+            }
+            else{
+                //  if less than max number of 0s allowed, window size still can expand
+                if (zeroCount < k){
+                    end++;
+                    zeroCount++;
+                }
+                //  max number of 0s reached, move the sliding window
+                else{
+                    if (curMax < (end - start)){
+                        curMax =  end - start;
+                    }
+                    if (nums[start] == 0){
+                        zeroCount--;
+                    }
+                    start++;
+                }
+            }
+        }
+
+        //  have to take into account if the entire array fits the criteria, as shown by end - start
+        return curMax > (end - start) ? curMax : (end - start);
+    }
 }
