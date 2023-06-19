@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class hashmap_set {
 
@@ -34,5 +36,27 @@ public class hashmap_set {
         result.add(0, zero);
         result.add(1,one);
         return result;
+    }
+
+    //  Determine whether the number of occurrences of each int in an array is unique
+    public boolean uniqueOccurrences(int[] arr) {
+
+        //  Use hashmap to store each number-occurrences pair
+        HashMap<Integer,Integer> count = new HashMap<>();
+        for (int n : arr){
+            count.put(n, count.getOrDefault(n, 0)+1);
+        }
+
+        //  Store each occurrences in a list
+        //  Return false if that number already exists
+        List<Integer> occurrences = new ArrayList<>();
+        for (Map.Entry<Integer,Integer> entry : count.entrySet()) {
+            System.out.println(entry.getValue());
+            if (occurrences.contains(entry.getValue())){
+                return false;
+            }
+            occurrences.add(entry.getValue());
+        }
+        return true;
     }
 }
