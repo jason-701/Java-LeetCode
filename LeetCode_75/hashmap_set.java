@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
@@ -58,5 +59,45 @@ public class hashmap_set {
             occurrences.add(entry.getValue());
         }
         return true;
+    }
+
+    //  Determine if 2 strings are close
+    public boolean closeStrings(String word1, String word2) {
+        //  HashMap stores the count of each character
+        HashMap<Character, Integer> word1Count = new HashMap<>();
+        HashMap<Character, Integer> word2Count = new HashMap<>();
+
+        for (int i = 0; i < word1.length(); i++) {
+            word1Count.put(word1.charAt(i), word1Count.getOrDefault(word1.charAt(i), 0)+1);
+        }
+        for (int i = 0; i < word2.length(); i++) {
+            word2Count.put(word2.charAt(i), word2Count.getOrDefault(word2.charAt(i), 0)+1);
+        }
+
+        //  Compare if they have the same keys, and the number of occurrences of each value is the same
+        Set<Character> word1Key = word1Count.keySet();
+        Set<Character> word2Key = word2Count.keySet();
+
+
+        Map<Integer, Integer> word1Value = countOccurrences(word1Count);
+        Map<Integer, Integer> word2Value = countOccurrences(word2Count);
+
+        System.out.println(word1Value);
+        System.out.println(word2Value);
+        
+        if (word1Key.equals(word2Key) && word1Value.equals(word2Value)){
+            return true;
+        }
+
+        return false;
+    }
+    private static Map<Integer, Integer> countOccurrences(HashMap<Character, Integer> map) {
+        Map<Integer, Integer> occurrences = new HashMap<>();
+
+        for (Integer value : map.values()) {
+            occurrences.put(value, occurrences.getOrDefault(value, 0) + 1);
+        }
+
+        return occurrences;
     }
 }
