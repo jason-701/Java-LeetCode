@@ -91,6 +91,7 @@ public class hashmap_set {
 
         return false;
     }
+
     private static Map<Integer, Integer> countOccurrences(HashMap<Character, Integer> map) {
         Map<Integer, Integer> occurrences = new HashMap<>();
 
@@ -99,5 +100,31 @@ public class hashmap_set {
         }
 
         return occurrences;
+    }
+
+    //  Equal row and column pairs
+    public int equalPairs(int[][] grid) {
+        //  2 HashMaps that stores int of each row/column as a string
+        HashMap<String, Integer> rowCount = new HashMap<>();
+        HashMap<String, Integer> columnCount = new HashMap<>();
+        for (int i = 0; i < grid.length; i++) {
+            String rowStr = "";
+            String columnStr = "";
+            for (int j = 0; j < grid.length; j++) {
+        //  Add a full stop to avoid cases such as [[11,1], [11,1]]
+                rowStr += grid[i][j];
+                rowStr += ".";
+                columnStr += grid[j][i];
+                columnStr += ".";
+            }
+            rowCount.put(rowStr, rowCount.getOrDefault(rowStr, 0)+1);
+            columnCount.put(columnStr, columnCount.getOrDefault(columnStr, 0)+1);
+        }
+
+        int count = 0;
+        for (String key : rowCount.keySet()){
+            count += rowCount.get(key) * columnCount.getOrDefault(key, 0);
+        }
+        return count;
     }
 }
