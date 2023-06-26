@@ -74,4 +74,67 @@ public class stack {
         }
         return result;  
     }
+
+    //  Given an encoded string, return its decoded string.
+    public String decodeString(String s) {
+        Stack<Character> stack = new Stack<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            // Keep traversing the string until there is a closing bracket
+            if (s.charAt(i) != ']'){
+                stack.push(s.charAt(i));
+            }
+            
+            else{
+                char temp = stack.pop();
+                while (temp != '['){
+                    stringBuilder.append(temp);
+                    temp = stack.pop();
+                }
+            //  The character right before the opening bracket will be the number of times the string has to be repeated
+            //  This portion of the code takes into account the number can be nulti-digit
+                int count;
+                char digit;
+                digit = stack.pop();
+                count = 0;
+                int multiplier = 1;
+                while (Character.isDigit(digit)){
+                    count = count + Character.getNumericValue(digit) * multiplier;
+                    multiplier *= 10;
+                    if (!stack.isEmpty()){
+                        digit = stack.pop();
+                    }
+                    else{
+                        break;
+                    }
+                    
+                }
+                if (!Character.isDigit(digit)){
+                    stack.push(digit);
+                }
+                
+
+            //  Create a string that is repeated a certain number of times
+                stringBuilder.reverse();
+                String str = stringBuilder.toString();
+                for (int j = 1; j < count; j++) {
+                    stringBuilder.append(str);
+                }
+
+            // Push result string back into the stack
+                char[] arr = stringBuilder.toString().toCharArray();
+                for (int j = 0; j < arr.length; j++) {
+                    stack.push(arr[j]);
+                }
+            
+            //  Reset stringBuilder
+                stringBuilder.setLength(0);
+            }
+        }
+        stringBuilder.setLength(0);
+        while(!stack.isEmpty()){
+            stringBuilder.append(stack.pop());
+        }
+        return stringBuilder.reverse().toString();
+    }
 }
