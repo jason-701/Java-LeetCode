@@ -140,4 +140,296 @@ public class daily_challenge{
             return this.weight;
         }
     }
+
+    //  Shortest path to get all keys
+    public int shortestPathAllKeys(String[] grid) {
+        // Use BFS to search for all possible states that we can travel to
+
+        Queue<State> queue = new LinkedList<>();
+
+        //  Store all the keys required for the BFS to be considered complete
+        List<Character> keysRequired = new ArrayList<>();
+        for (String row : grid){
+            for (char cell : row.toCharArray()){
+                if (Character.isLowerCase(cell)){
+                    keysRequired.add(cell);
+                }
+            }
+        }
+
+        //  HashSet to store all visited nodes so far
+        Set<State> visitedStates = new HashSet<>();
+
+        //  Move count for BFS
+        int moves = 0;
+
+        int startRow, startColumn;
+        startRow = startColumn = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length(); j++) {
+                if (grid[i].charAt(j) == '@') {
+                    startRow = i;
+                    startColumn = j;
+                    break;
+                }
+            }
+        }
+        //  Add starting point to queue
+        State start = new State(startRow, startColumn, new char[0]);
+        queue.add(start);
+        queue.add(null);
+
+        HashSet<Character> keysCollectedSoFar = new HashSet<>();
+
+        //  Apply BFS
+        while(!queue.isEmpty()){
+            State curState = queue.remove();
+            if (curState == null){
+                moves++;
+                queue.add(null);
+                if (queue.peek() == null){
+                    break;
+                }
+                else{
+                    continue;
+                }
+            }
+            if (visitedStates.contains(curState)){
+                System.out.println("Already visited " + curState.getRow() + " by " + curState.getColumn());
+                continue;
+            }
+            visitedStates.add(curState);
+            System.out.println("Went to " + curState.getRow() + " by " + curState.getColumn());
+            //  Check if current state is the exit condition
+            boolean goalConditionMet = true;
+            char[] keysCollected = curState.getKeyscollected();
+            for (char key : keysCollected) {
+                keysCollectedSoFar.add(key);
+            }
+            for (char key : keysRequired) {
+                if (!keysCollectedSoFar.contains(key)){
+                    goalConditionMet = false;
+                    break;
+                }
+            }
+            if (goalConditionMet) {
+                return moves;
+            }
+
+            int newRow, newColumn;
+
+            //  Travel up one row
+            if (curState.getRow()>0){
+                newRow = curState.getRow()-1;
+                newColumn = curState.getColumn();
+                Boolean canTravel = canTravel(curState, newRow, newColumn, grid);
+                char[] newKeys;
+                if (canTravel){
+                    if (Character.isLowerCase(grid[newRow].charAt(newColumn))){
+                        newKeys = getNewKey(keysCollected, newRow, newColumn, grid);
+                    }
+                    else{
+                        newKeys = keysCollected;
+                    }
+                    State newState = new State(newRow, newColumn, newKeys);
+                    queue.add(newState);
+                    System.out.println("Traveled up");
+                }
+            }
+
+            // Travel down one row
+            if (curState.getRow()<grid.length-1){
+                newRow = curState.getRow()+1;
+                newColumn = curState.getColumn();
+                Boolean canTravel = canTravel(curState, newRow, newColumn, grid);
+                char[] newKeys;
+                if (canTravel){
+                    if (Character.isLowerCase(grid[newRow].charAt(newColumn))){
+                        newKeys = getNewKey(keysCollected, newRow, newColumn, grid);
+                    }
+                    else{
+                        newKeys = keysCollected;
+                    }
+                    State newState = new State(newRow, newColumn, newKeys);
+                    queue.add(newState);
+                    System.out.println("Traveled down");
+                }
+            }
+
+            //  Travel right one column
+            if (curState.getColumn()<grid[0].length()-1){
+                newRow = curState.getRow();
+                newColumn = curState.getColumn()+1;
+                Boolean canTravel = canTravel(curState, newRow, newColumn, grid);
+                char[] newKeys;
+                if (canTravel){
+                    if (Character.isLowerCase(grid[newRow].charAt(newColumn))){
+                        newKeys = getNewKey(keysCollected, newRow, newColumn, grid);
+                    }
+                    else{
+                        newKeys = keysCollected;
+                    }
+                    State newState = new State(newRow, newColumn, newKeys);
+                    queue.add(newState);
+                    System.out.println("Traveled right");
+                }
+            }
+
+            //  Travel left one column
+            if (curState.getColumn()>0){
+                newRow = curState.getRow();
+                newColumn = curState.getColumn()-1;
+                Boolean canTravel = canTravel(curState, newRow, newColumn, grid);
+                char[] newKeys;
+                if (canTravel){
+                    if (Character.isLowerCase(grid[newRow].charAt(newColumn))){
+                        newKeys = getNewKey(keysCollected, newRow, newColumn, grid);
+                    }
+                    else{
+                        newKeys = keysCollected;
+                    }
+                    State newState = new State(newRow, newColumn, newKeys);
+                    queue.add(newState);
+                    System.out.println("Traveled left");
+                }
+            }
+        }
+        return -1;
+    }
+
+    private boolean canTravel(State curState, int newRow, int newColumn, String[] grid){
+        char test = grid[newRow].charAt(newColumn);
+        //  empty cell
+        if (test == '.'){
+            return true;
+        }
+        //  wall
+        else if (test == '#'){
+            return false;
+        }
+        //  lock
+        else if (Character.isUpperCase(test)){
+            for (char curKey : curState.getKeyscollected()){
+                if (Character.toLowerCase(test)==curKey){
+                    return true;
+                }
+            }
+            return false;
+        }
+        //  key
+        else{
+            return true;
+        }
+    }
+
+    private char[] getNewKey(char[] keysCollected, int row, int column, String[] grid){
+        char[] newKeys = new char[keysCollected.length+1];
+        for (int i = 0; i < keysCollected.length; i++) {
+            newKeys[i] = keysCollected[i];
+        }
+        newKeys[keysCollected.length] = grid[row].charAt(column);
+        return newKeys;
+    }
+
+    //  Static class to store the state of the exploration
+    private static class State{
+        private final int row;
+        private final int column;
+        private final char[] keysCollected;
+
+        //  Constructor
+        public State(int row, int column, char[] keysCollected){
+            this.row = row;
+            this.column = column;
+            this.keysCollected = keysCollected;
+        }
+
+        // Basic functions
+        public int getRow(){
+            return this.row;
+        }
+
+        public int getColumn(){
+            return this.column;
+        }
+
+        public char[] getKeyscollected(){
+            return this.keysCollected;
+        }
+
+       @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+            State other = (State) obj;
+            return row == other.row && column == other.column;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(row, column);
+        }
+
+        /*@Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+            State other = (State) obj;
+            return row == other.row &&
+                    column == other.column &&
+                    Arrays.equals(keysCollected, other.keysCollected);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = Objects.hash(row, column);
+            result = 31 * result + Arrays.hashCode(keysCollected);
+            return result;
+        }*/
+    }
 }
+
+
+
+/*
+ To solve this problem, you can use a breadth-first search (BFS) algorithm to explore all possible paths from the starting point while keeping track of the keys collected so far. Here are some tips to help you get started:
+
+1. Identify the key components of the problem:
+   - The grid: Represent the grid using a 2D array or a matrix, where each cell contains the corresponding character ('.', '#', '@', lowercase letter, or uppercase letter).
+   - Starting point: Determine the coordinates of the starting point '@' in the grid.
+   - Keys and locks: Keep track of the keys and locks encountered in the grid. You can use arrays, sets, or dictionaries to store the keys collected and the locks remaining.
+
+2. Define a data structure to represent the state of the search:
+   - Each state should include the current position (row and column) in the grid and the keys collected so far.
+   - You can create a class or a tuple to represent the state.
+
+3. Initialize a queue to perform BFS:
+   - Enqueue the initial state, which consists of the starting position and an empty set of keys.
+
+4. Perform BFS:
+   - While the queue is not empty, dequeue a state.
+   - Check if the current state satisfies the goal condition (i.e., all keys have been collected).
+     - If yes, return the number of moves taken to reach that state.
+   - Generate all possible next states from the current state by moving in each of the four cardinal directions (up, down, left, right).
+     - Ensure that the next position is within the grid bounds and not a wall ('#').
+     - If the next position is a key, add it to the keys collected in the new state.
+     - If the next position is a lock, check if the corresponding key has been collected before proceeding.
+   - Enqueue the valid next states into the queue.
+
+5. Track visited states:
+   - To avoid revisiting the same state multiple times, maintain a set or a hash table to store the visited states.
+   - Mark each state as visited when dequeued from the queue.
+
+6. Termination condition:
+   - If the queue becomes empty without finding a solution, return -1 to indicate that it is impossible to acquire all keys.
+
+By implementing these steps, you can create a function that takes the grid as input and returns the minimum number of moves to acquire all the keys or -1 if it is not possible. Remember to consider edge cases, such as when there are no keys or locks in the grid.
+ */
