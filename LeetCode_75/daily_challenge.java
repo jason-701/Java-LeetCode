@@ -182,8 +182,6 @@ public class daily_challenge{
         queue.add(start);
         queue.add(null);
 
-        HashSet<Character> keysCollectedSoFar = new HashSet<>();
-
         //  Apply BFS
         while(!queue.isEmpty()){
             State curState = queue.remove();
@@ -210,9 +208,6 @@ public class daily_challenge{
             //  Check if current state is the exit condition
             boolean goalConditionMet = true;
             char[] keysCollected = curState.getKeyscollected();
-            for (char key : keysCollected) {
-                keysCollectedSoFar.add(key);
-            }
             for (char key : keysRequired) {
                 boolean keyFound = false;
                 for (char keysSoFar : keysCollected){
