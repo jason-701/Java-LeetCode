@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class june_challege{
+public class june_challenge{
 
     //  Find k pairs with smallest sums
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
@@ -383,6 +383,79 @@ public class june_challege{
             result = 31 * result + Arrays.hashCode(keysCollected);
             return result;
         }
+    }
+
+    //  last day where you can still cross
+    public int latestDayToCross(int row, int col, int[][] cells) {
+
+        //  Initialize the row x col matrix to run DFS on
+        int[][] grid = new int[row+1][col+1];   
+
+        //  Mark the cells with the days they become invalid
+        for (int i = 0; i < cells.length; i++) {
+            grid[cells[i][0]][cells[i][1]] = i + 1;
+        }
+
+        //  Apply binary search to look for a day that we can still cross the grid
+        int start = 0;
+        int end = cells.length-1;
+        int mid;
+        int maxDay = 0;
+
+        while (start <= end){
+            mid = start + (end - start) / 2;
+            //  If can travel, update maxDay and increase the midpoint
+            if (canTraverse(grid,mid)){
+                start = mid+1;
+                maxDay = mid;
+            }
+            //  If cannot travel, decrease midpoint
+            else{
+                end = mid - 1;
+            }
+        }
+        return maxDay;
+    }
+
+    private boolean canTraverse(int[][]grid, int mid){
+        int cols = grid[0].length;
+
+        //  Run DFS from the top row
+        for (int i = 1; i < cols; i++) {
+            boolean[][] visited = new boolean[grid.length][cols];
+            if (dfs(1,i,grid, mid, visited)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean dfs(int row, int col, int[][]grid, int mid, boolean[][] visited){
+        int cellRow = grid.length;
+        int cellColumn = grid[0].length;
+
+        //  Check if cell is out of bounds or not valid
+        if (row >= cellRow || row < 1 || col >= cellColumn || col < 1){
+            return false;
+        }
+
+        //  If already visited, or current day is already later than the day the cell becomes invalid
+        if (grid[row][col] <= mid || visited[row][col]){
+            return false;
+        }
+
+        //  Mark cell as visited
+        visited[row][col] = true;
+
+        // If we have reached the bottom
+        if (row == cellRow-1){
+            return true;
+        }
+
+        // Recursively explore all cells
+        boolean result = dfs(row+1, col, grid, mid, visited) || dfs(row, col+1, grid, mid, visited) || dfs(row-1, col, grid, mid, visited) || dfs(row, col-1, grid, mid, visited);
+
+        return result;
     }
 }
 
