@@ -156,9 +156,6 @@ public class daily_challenge{
                 }
             }
         }
-        for (Character charr : keysRequired){
-            System.out.println(charr);
-        }
 
         //  HashSet to store all visited nodes so far
         Set<State> visitedStates = new HashSet<>();
