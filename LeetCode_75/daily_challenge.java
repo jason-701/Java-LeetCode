@@ -156,6 +156,9 @@ public class daily_challenge{
                 }
             }
         }
+        for (Character charr : keysRequired){
+            System.out.println(charr);
+        }
 
         //  HashSet to store all visited nodes so far
         Set<State> visitedStates = new HashSet<>();
@@ -184,9 +187,12 @@ public class daily_challenge{
         //  Apply BFS
         while(!queue.isEmpty()){
             State curState = queue.remove();
+
+            //  Counts the number of move/level traversed
             if (curState == null){
                 moves++;
                 queue.add(null);
+                //  End of queue reached
                 if (queue.peek() == null){
                     break;
                 }
@@ -194,12 +200,13 @@ public class daily_challenge{
                     continue;
                 }
             }
+
+            //  Already went to this state
             if (visitedStates.contains(curState)){
-                System.out.println("Already visited " + curState.getRow() + " by " + curState.getColumn());
                 continue;
-            }
+            } 
             visitedStates.add(curState);
-            System.out.println("Went to " + curState.getRow() + " by " + curState.getColumn());
+
             //  Check if current state is the exit condition
             boolean goalConditionMet = true;
             char[] keysCollected = curState.getKeyscollected();
@@ -207,7 +214,14 @@ public class daily_challenge{
                 keysCollectedSoFar.add(key);
             }
             for (char key : keysRequired) {
-                if (!keysCollectedSoFar.contains(key)){
+                boolean keyFound = false;
+                for (char keysSoFar : keysCollected){
+                    if ((key == keysSoFar)){
+                        keyFound = true;
+                        break;
+                    }
+                } 
+                if (!keyFound){
                     goalConditionMet = false;
                     break;
                 }
@@ -233,7 +247,6 @@ public class daily_challenge{
                     }
                     State newState = new State(newRow, newColumn, newKeys);
                     queue.add(newState);
-                    System.out.println("Traveled up");
                 }
             }
 
@@ -252,7 +265,6 @@ public class daily_challenge{
                     }
                     State newState = new State(newRow, newColumn, newKeys);
                     queue.add(newState);
-                    System.out.println("Traveled down");
                 }
             }
 
@@ -271,7 +283,6 @@ public class daily_challenge{
                     }
                     State newState = new State(newRow, newColumn, newKeys);
                     queue.add(newState);
-                    System.out.println("Traveled right");
                 }
             }
 
@@ -290,7 +301,6 @@ public class daily_challenge{
                     }
                     State newState = new State(newRow, newColumn, newKeys);
                     queue.add(newState);
-                    System.out.println("Traveled left");
                 }
             }
         }
@@ -323,11 +333,14 @@ public class daily_challenge{
     }
 
     private char[] getNewKey(char[] keysCollected, int row, int column, String[] grid){
-        char[] newKeys = new char[keysCollected.length+1];
-        for (int i = 0; i < keysCollected.length; i++) {
-            newKeys[i] = keysCollected[i];
+        char newKey = grid[row].charAt(column);
+        for (char key : keysCollected){
+            if (key == newKey){
+                return keysCollected;
+            }
         }
-        newKeys[keysCollected.length] = grid[row].charAt(column);
+        char[] newKeys = Arrays.copyOf(keysCollected, keysCollected.length + 1);
+        newKeys[keysCollected.length] = newKey;
         return newKeys;
     }
 
@@ -357,24 +370,8 @@ public class daily_challenge{
             return this.keysCollected;
         }
 
-       @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-            State other = (State) obj;
-            return row == other.row && column == other.column;
-        }
-
+        //  To check if 2 state are equal (same row, same column, same keys)
         @Override
-        public int hashCode() {
-            return Objects.hash(row, column);
-        }
-
-        /*@Override
         public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
@@ -393,7 +390,7 @@ public class daily_challenge{
             int result = Objects.hash(row, column);
             result = 31 * result + Arrays.hashCode(keysCollected);
             return result;
-        }*/
+        }
     }
 }
 
