@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class daily_challenge{
+public class june_challege{
 
     //  Find k pairs with smallest sums
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
@@ -386,39 +386,3 @@ public class daily_challenge{
     }
 }
 
-
-
-/*
- To solve this problem, you can use a breadth-first search (BFS) algorithm to explore all possible paths from the starting point while keeping track of the keys collected so far. Here are some tips to help you get started:
-
-1. Identify the key components of the problem:
-   - The grid: Represent the grid using a 2D array or a matrix, where each cell contains the corresponding character ('.', '#', '@', lowercase letter, or uppercase letter).
-   - Starting point: Determine the coordinates of the starting point '@' in the grid.
-   - Keys and locks: Keep track of the keys and locks encountered in the grid. You can use arrays, sets, or dictionaries to store the keys collected and the locks remaining.
-
-2. Define a data structure to represent the state of the search:
-   - Each state should include the current position (row and column) in the grid and the keys collected so far.
-   - You can create a class or a tuple to represent the state.
-
-3. Initialize a queue to perform BFS:
-   - Enqueue the initial state, which consists of the starting position and an empty set of keys.
-
-4. Perform BFS:
-   - While the queue is not empty, dequeue a state.
-   - Check if the current state satisfies the goal condition (i.e., all keys have been collected).
-     - If yes, return the number of moves taken to reach that state.
-   - Generate all possible next states from the current state by moving in each of the four cardinal directions (up, down, left, right).
-     - Ensure that the next position is within the grid bounds and not a wall ('#').
-     - If the next position is a key, add it to the keys collected in the new state.
-     - If the next position is a lock, check if the corresponding key has been collected before proceeding.
-   - Enqueue the valid next states into the queue.
-
-5. Track visited states:
-   - To avoid revisiting the same state multiple times, maintain a set or a hash table to store the visited states.
-   - Mark each state as visited when dequeued from the queue.
-
-6. Termination condition:
-   - If the queue becomes empty without finding a solution, return -1 to indicate that it is impossible to acquire all keys.
-
-By implementing these steps, you can create a function that takes the grid as input and returns the minimum number of moves to acquire all the keys or -1 if it is not possible. Remember to consider edge cases, such as when there are no keys or locks in the grid.
- */

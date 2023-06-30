@@ -1,7 +1,7 @@
 public class Main{
     public static void main(String[] args) {
         String[] grid = {"@aAbBcC"};
-        daily_challenge test = new daily_challenge();
+        june_challege test = new june_challege();
         System.out.println(test.shortestPathAllKeys(grid));
     }
 }
