@@ -35,4 +35,60 @@ public class july_challenge {
             allocation[i] -= cookies[index];
         }
     }
+
+    //  2 July 2023
+    //  Maximum number of achievable transfer requests
+    public int maximumRequests(int n, int[][] requests) {
+
+        //  Array to see net change in numbers for each building
+        int[] allocation = new int[n];
+        Arrays.fill(allocation, 0);
+
+        //  HashSet to keep track of how many requests are processed
+        HashSet<Integer> processed = new HashSet<>();
+
+        int curMax[] = {0};
+        backtrackRequest(requests, processed, curMax, allocation, 0);
+        return curMax[0];
+    }
+
+    private void backtrackRequest(int[][] requests, HashSet<Integer> processed, int[] curMax, int[]allocation, int index){
+
+        //  Reached the end of requests
+        if (index == requests.length){
+            for (int i = 0; i < allocation.length; i++) {
+                if (allocation[i] != 0){
+                    return;
+                }
+            }
+            if (curMax[0] < processed.size()){
+                curMax[0] = processed.size();
+            }
+            return;
+        }
+
+        //  Allow current allocation if net change for all buildings is 0
+        boolean canAllocate = true;
+        for (int i = 0; i < allocation.length; i++) {
+            if (allocation[i] != 0){
+                canAllocate = false;
+                break;
+            }
+        }
+        if (canAllocate){
+            if (curMax[0] < processed.size()){
+                curMax[0] = processed.size();
+            }
+        }
+
+        for (int i = index; i < requests.length; i++) {
+            allocation[requests[i][0]]--;
+            allocation[requests[i][1]]++;
+            processed.add(i);
+            backtrackRequest(requests, processed, curMax, allocation, i+1);
+            allocation[requests[i][0]]++;
+            allocation[requests[i][1]]--;
+            processed.remove(i);
+        }
+    }
 }
