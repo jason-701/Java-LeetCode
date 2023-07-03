@@ -91,4 +91,56 @@ public class july_challenge {
             processed.remove(i);
         }
     }
+
+    //  3 July 2023
+    //  Buddy strings
+    public boolean buddyStrings(String s, String goal) {
+
+        //  Strings have different length
+        if (s.length()!=goal.length()){
+            return false;
+        }
+
+        //  Keep track of index of characters that are different
+        int char1, char2;
+        char1 = char2 = -1;
+
+        //  Keep track of number of each letter in s
+        Set<Character> letterCount = new HashSet<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != goal.charAt(i)){
+                if (char1 == -1){
+                    char1 = i;
+                }
+                else if (char2 == -1){
+                    char2 = i;
+                }
+                else{
+                    return false;
+                }
+            }
+            letterCount.add(s.charAt(i));
+        }
+
+        //  Only one character is different, means no swaps can achieve desired state
+        if (char1 != -1 && char2 == -1){
+            return false;
+        }
+
+        //  s = goal
+        if (char1 == -1 && char2 == -1){
+            if (s.length() != letterCount.size()){
+                return true;
+            }
+            return false;
+        }
+
+        //  2 characters are different
+        if (s.charAt(char1) == goal.charAt(char2) && s.charAt(char2) == goal.charAt(char1)){
+            return true;
+        }
+
+        return false;
+    }
 }
