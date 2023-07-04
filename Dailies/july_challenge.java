@@ -143,4 +143,22 @@ public class july_challenge {
 
         return false;
     }
+
+    //  4 July 2023
+    //  Single number 2
+    public int singleNumber(int[] nums) {
+        int ans = 0;
+        for (int i = 0; i < 32; i++) {
+            int sum = 0;
+        
+            //  For each num, by shifting it i bits to the right, we effectively count the total number of 1s at that bit
+            //  Since most numbers appears exactly 3 times expect one, applying modulo of 3 can single out that number
+            for (int num : nums){
+                sum += num >> i & 1;
+            }
+            sum %= 3;
+            ans |= sum << i;
+        }
+        return ans;
+    }
 }
