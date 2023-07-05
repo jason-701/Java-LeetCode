@@ -161,4 +161,38 @@ public class july_challenge {
         }
         return ans;
     }
+
+    //  5 July 2023
+    //  Longest Subarray of 1's After Deleting One Element
+    public int longestSubarray(int[] nums) {
+        //  Use of sliding window to update curMax
+
+        int start, end, curMax, zeroCount;
+        start = end = curMax = zeroCount = 0;
+
+        //  Iterate through nums array
+        while (end < nums.length){
+            if (nums[end] == 1 && zeroCount <= 1){
+                end++; // Expand the sliding window
+            }
+            else{
+                if (zeroCount == 0){
+                    zeroCount++;
+                    end++;
+                }
+                else{
+                    //  Update max sliding window
+                    curMax = Math.max(curMax, (end - start));
+
+                    //  Update start index until a zero is reached
+                    while (nums[start] != 0){
+                        start++;
+                    }
+                    start++;
+                    zeroCount--;
+                }
+            }
+        }
+        return Math.max(curMax-1, end-start-1);
+    }
 }
