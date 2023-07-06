@@ -195,4 +195,43 @@ public class july_challenge {
         }
         return Math.max(curMax-1, end-start-1);
     }
+
+    //  6 July 2023
+    //  Minimum size subarray sum
+    public int minSubArrayLen(int target, int[] nums) {
+        int start, end, curSum, minCount, curCount;
+        start = end = curSum = curCount = 0;
+        minCount = Integer.MAX_VALUE;
+
+        while (end < nums.length){
+            if (curSum < target){
+                curSum += nums[end++];
+                curCount++;
+            }
+            else{
+                minCount = Math.min(minCount, curCount);
+                curSum -= nums[start++];
+                curCount--;
+            }
+        }
+
+        //  Decrease sliding window if sum > target
+        while (curSum > target){
+            curSum -= nums[start++];
+            curCount--;
+        }
+        
+        if (curSum >= target){
+            return Math.min(minCount, curCount);
+        }
+        //  Sum less than target and whole array is traversed i.e. no answer
+        else if (curCount == nums.length){
+            return 0;
+        }
+        //  Sum less than target, so we add 1 and return the min between that and the current minimum
+        else{
+            return Math.min(minCount, curCount+1);
+
+        }
+    }  
 }
