@@ -234,4 +234,44 @@ public class july_challenge {
 
         }
     }  
+
+    //  7 July 2023
+    //  Maximize the confusion of an exam
+    public int maxConsecutiveAnswers(String answerKey, int k) {
+        //  Sliding window while keeping track of number of true and false
+
+        int start, end, trueCount, falseCount, maxConsecutives;
+        start = end = trueCount = falseCount = maxConsecutives = 0;
+
+        char[] answerKeyArray = answerKey.toCharArray();
+        while (end < answerKeyArray.length){
+            if (trueCount <= k || falseCount <= k){
+                if (answerKeyArray[end] == 'T'){
+                    trueCount++;
+                }
+                else{
+                    falseCount++;
+                }
+                end++;
+            }
+            else{
+                maxConsecutives = Math.max(maxConsecutives, end - start - 1);
+                while (trueCount > k && falseCount > k && start < answerKeyArray.length){
+                    if (answerKeyArray[start] == 'T'){
+                        trueCount--;
+                    }
+                    else{
+                        falseCount--;
+                    }
+                    start++;
+                }
+            }
+        }
+
+        if (trueCount > k && falseCount > k){
+            //  e.g. TFFT and k = 1, at the second T, it is still included because at that instance trueCount = 1
+            return Math.max(maxConsecutives, end - start - 1);
+        }
+        return Math.max(maxConsecutives, end - start);
+    }
 }
