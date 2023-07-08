@@ -274,4 +274,37 @@ public class july_challenge {
         }
         return Math.max(maxConsecutives, end - start);
     }
+
+    //  8 July 2023
+    //  Put marbles in bags
+    public long putMarbles(int[] weights, int k) {
+        //  Assume if i partition at weights[i], the partition is between i and i+1
+        //  e.g  2 3 4 5. and partition at 2 will give 2 | 3 4 5
+        //  If we partition at index i, this will increase the sum by weights[i] + weights[i+1]
+
+        int len = weights.length;
+
+        if (len == k){
+            return 0;
+        }
+
+        int[] sumIncrease = new int[len-1];
+
+        for (int i = 0; i < len-1; i++) {
+            sumIncrease[i] = weights[i] + weights[i+1];
+        }
+        
+        Arrays.sort(sumIncrease);
+
+        long minSum = 0;
+        long maxSum = 0;
+
+        for (int i = 0; i < k-1; i++) {
+            minSum += sumIncrease[i];
+            maxSum += sumIncrease[len-2-i];
+        }
+        
+        return maxSum - minSum;
+
+    }
 }

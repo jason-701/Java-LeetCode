@@ -1,7 +1,7 @@
 public class Main{
     public static void main(String[] args) {
-        String answerKey = "TTFF";
+        int[] weights = {1,3,5,1};
         july_challenge test = new july_challenge();
-        System.out.println(test.maxConsecutiveAnswers(answerKey,2));
+        System.out.println(test.putMarbles(weights,2));
     }
 }
