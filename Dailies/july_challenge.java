@@ -307,4 +307,58 @@ public class july_challenge {
         return maxSum - minSum;
 
     }
+
+    //  9 July 2023
+    //  Substring with largest variance
+    public int largestVariance(String s) {
+        // Kadane's algorithm
+        // I'm sorry this solution is mostly copied from online as I have non idea how to improve time complexity from 26^2 * N^2
+        //  key considerations: a substring with only one kind of letter has variance 0, e.g. aaaa
+
+        int[] freq = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            freq[(int)(s.charAt(i) - 'a')]++;
+        }
+
+        int maxVariance = 0;
+        
+        for (int a = 0; a < 26; a++) {
+            for (int b = 0; b < 26; b++) {
+                int remainingA = freq[a];
+                int remainingB = freq[b];
+                if (a == b || remainingA == 0 || remainingB == 0){
+                    continue;
+                }
+
+                int curBfreq = 0;
+                int curAfreq = 0;
+
+                //  We assume for each letter pair (a,b), b needs to be appear more than a in order for maxVariance to get updated
+                //  The opposite pair (b,a) will still get considered since the two for loops both runs from 0 through 25
+                for (int i = 0; i < s.length(); i++) {
+                    int c = (int)(s.charAt(i) - 'a');
+                    if (c==b){
+                        curBfreq++;
+                    }
+                    if (c==a){
+                        curAfreq++;
+                        remainingA--;
+                    }
+                    //  letter a needs to appear at least once or else it won't be a valid substring
+                    if (curAfreq > 0){
+                        maxVariance = Math.max(maxVariance, curBfreq -  curAfreq);
+                    }
+
+                    //  We only reset counter (i.e. finished considering substring up till current index) if b appears more than a, which gives negative variance
+                    //  AND if there's still more letter a remaining, since that's required for a valid substring
+                    if (curBfreq < curAfreq && remainingA > 0){
+                        curBfreq = 0;
+                        curAfreq = 0;
+                    }
+                    
+                }
+            }
+        }
+        return maxVariance;
+    }
 }
