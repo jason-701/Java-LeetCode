@@ -361,4 +361,55 @@ public class july_challenge {
         }
         return maxVariance;
     }
+
+    //  10 July 2023
+    //  Minimum depth of binary tree
+    
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode() {}
+        TreeNode(int val) { this.val = val; }
+        TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+        }
+    }
+
+    public int minDepth(TreeNode root) {
+    //  BFS to search for first leaf node
+    //  Traverses each level at a time, and returns the first leaf node's depth
+
+        if (root == null){
+            return 0;
+        }
+        
+        Queue<nodeQueue> queue = new LinkedList<>();
+        queue.add(new nodeQueue(root, 1));
+        while (!queue.isEmpty()){
+            nodeQueue curNode = queue.poll();
+            if (curNode.node.left == null && curNode.node.right == null){
+                return curNode.depth;
+            }
+            if (curNode.node.left != null){
+                queue.add(new nodeQueue(curNode.node.left, curNode.depth+1));
+            }
+            if (curNode.node.right != null){
+                queue.add(new nodeQueue(curNode.node.right, curNode.depth+1));
+            }
+        }
+        return 0;
+    }
+
+    public class nodeQueue{
+        TreeNode node;
+        int depth;
+        nodeQueue(TreeNode node, int depth){
+            this.node = node;
+            this.depth = depth;
+        }
+    }
+
 }
