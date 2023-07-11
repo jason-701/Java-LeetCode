@@ -362,9 +362,6 @@ public class july_challenge {
         return maxVariance;
     }
 
-    //  10 July 2023
-    //  Minimum depth of binary tree
-    
     public class TreeNode {
         int val;
         TreeNode left;
@@ -378,6 +375,8 @@ public class july_challenge {
         }
     }
 
+    //  10 July 2023
+    //  Minimum depth of binary tree
     public int minDepth(TreeNode root) {
     //  BFS to search for first leaf node
     //  Traverses each level at a time, and returns the first leaf node's depth
@@ -412,4 +411,119 @@ public class july_challenge {
         }
     }
 
+    //  11 July 2023
+    //  All nodes distance k in binary tree
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        List<Integer> result = new ArrayList<>();
+
+        //  If node is the root
+        if (root.val == target.val){
+            treeDFS(root, 0, k, result);
+            return result;
+        }
+        //  Find the target node and see whether it's in the left or right subtree of the root
+        int[] depth = {1};
+        TreeNode targetSubtree = findNode(root.left, target, depth);
+        boolean targetInLeft = targetSubtree != null;
+        if (!targetInLeft){
+            depth[0] = 1;
+            targetSubtree = findNode(root.right, target, depth);
+        }
+        System.out.println(depth[0]);
+
+        //  Add root node if depth = k
+        if (depth[0] == k){
+            result.add(root.val);
+        }
+
+        //  If target is in the left subtree, we need to traverse the right subtree to find nodes with distance k - depth
+        if (k >= depth[0]){
+            if (targetInLeft){
+                treeDFS(root.right, 1, k-depth[0], result);
+            }
+            //  Else traverse the left subtree to find nodes with distance k - depth
+            else{
+                treeDFS(root.left, 1, k-depth[0], result);
+            }
+        }
+        
+
+        TreeNode tempTarget = target;
+        for (int i = 1; i < depth[0]; i++) {
+            //  Move up the tree by 1 level each time and add all nodes with distance k - i + depth that is in the other subtree
+            TreeNode parent = findParent(root, tempTarget);
+            boolean inLeft = parent.left == tempTarget;
+            tempTarget = parent;
+            if (i == k){
+                result.add(parent.val);
+                break;
+            }
+            if (inLeft){
+                treeDFS(parent.right, depth[0] - i + 1, k - i + depth[0] - i, result);
+            }
+            else{
+                treeDFS(parent.left, depth[0] - i + 1, k - i + depth[0] - i, result);
+            }
+        }
+        
+        //  Add all nodes with distance k in a downward direction from target
+        treeDFS(target, 0, k, result);
+        return result;
+    }
+
+    //  Find target node and the depth it is located in
+    public TreeNode findNode(TreeNode node, TreeNode target, int[] depth){
+        if (node == null){
+            return null;
+        }
+        if (node == target){
+            return node;
+        }
+        
+        TreeNode left = findNode(node.left, target, depth);
+        TreeNode right = findNode(node.right, target, depth);
+        if (left != null){
+            depth[0]++;
+            return left;
+        }
+        if (right != null){
+            depth[0]++;
+            return right;
+        }
+        return null;
+    }
+
+    //  Add all nodes of certain depth from a given node
+    public void treeDFS(TreeNode node, int curDepth, int targetDepth, List<Integer> result){
+        if (curDepth > targetDepth){
+            return;
+        }
+        if (node == null){
+            return;
+        }
+        if (curDepth == targetDepth){
+            result.add(node.val);
+            return;
+        }
+        treeDFS(node.left, curDepth+1, targetDepth, result);
+        treeDFS(node.right, curDepth+1, targetDepth, result);
+    }
+
+    public TreeNode findParent (TreeNode node, TreeNode target){
+        if (node == null){
+            return null;
+        }
+        if (node.left == target || node.right == target){
+            return node;
+        }
+        TreeNode left = findParent(node.left, target);
+        TreeNode right = findParent(node.right, target);
+        if (left != null){
+            return left;
+        }
+        if (right != null){
+            return right;
+        }
+        return null;
+    }   
 }
