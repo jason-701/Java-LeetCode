@@ -589,7 +589,9 @@ public class july_challenge {
         int[] visited = new int[length];
         Queue<Integer> queue = new LinkedList<>();
     
-        // Reverse the graph
+        //  Reverse the graph
+        //  With original graph, graph[i] shows all nodes that node i can reach
+        //  With new graph, graph[i] shows all nodes that can reach node i
         for (int i = 0; i < length; i++) {
             reversedGraph[i] = new ArrayList<>();
         }
