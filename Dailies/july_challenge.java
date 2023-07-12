@@ -529,58 +529,6 @@ public class july_challenge {
 
     //  12 July 2023
     // FInd eventual safe states
-    /*public List<Integer> eventualSafeNodes(int[][] graph) {
-        int length = graph.length;
-
-        //  List to store results
-        List<Integer> result = new ArrayList<>();
-
-        //  Array of lists for graph data
-        List<Integer>[] graphMap = new List[length];
-
-        //  Number of edges leaving each node
-        int[] outgoingEdges = new int[length];
-
-        int[] visited = new int[length];
-
-        for (int i = 0; i < length; i++) {
-            graphMap[i] = new ArrayList<>();
-            for (int j = 0; j < graph[i].length; j++) {
-                graphMap[i].add(graph[i][j]);
-                outgoingEdges[i]++;
-            }
-        }
-        
-        while (true){
-            boolean addedNode = false;
-            List<Integer> keysToRemove = new ArrayList<>();
-            for (int i = 0; i < length; i++) {
-                if (outgoingEdges[i]==0 && visited[i] != 1){
-                    visited[i] = 1;
-                    addedNode = true;
-                    result.add(i);
-                    keysToRemove.add(i);
-                }
-            }
-            if (addedNode){
-                for (int i = 0; i < keysToRemove.size(); i++) {
-                    for (int j = 0; j < length; j++) {
-                        if (graphMap[j].contains(keysToRemove.get(i))){
-                            graphMap[j].remove(keysToRemove.get(i));
-                            outgoingEdges[j]--;
-                        }
-                    }
-                }
-            }
-            if (!addedNode){
-                break;
-            }
-        }
-        Collections.sort(result);
-        
-        return result;
-    }*/
-
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int length = graph.length;
         List<Integer> result = new ArrayList<>();
