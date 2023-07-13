@@ -570,5 +570,51 @@ public class july_challenge {
     
         Collections.sort(result);
         return result;
-    }    
+    }
+
+    //  13 July 2023
+    //  Course schedule
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = new List[numCourses];
+        int courseFinished = 0;
+        int[] outgoingEdges = new int[numCourses]; // Number of prerequisites for each course
+        int[] visited = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        //  Graph[i] shows all courses that can be taken after course i is taken
+        for (int i = 0; i < prerequisites.length; i++) {
+            int preReq = prerequisites[i][1];
+            int course = prerequisites[i][0];
+            outgoingEdges[course]++;
+            graph[preReq].add(course);
+        }
+
+        //  Add all courses with no prerequisites into a queue
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (outgoingEdges[i] == 0){
+                queue.offer(i);
+                visited[i] = 1;
+            }
+        }
+
+        while (!queue.isEmpty()){
+            int course = queue.poll();
+            courseFinished++;
+            for (int neighbor : graph[course]){
+                outgoingEdges[neighbor]--;
+                if (outgoingEdges[neighbor] == 0){
+                    queue.offer(neighbor);
+                    visited[neighbor] = 1;
+                }
+            }
+        }
+        
+        if (courseFinished == numCourses){
+            return true;
+        }
+        return false;
+    }
 }
