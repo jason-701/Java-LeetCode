@@ -3,8 +3,8 @@ import java.util.Map;
 
 public class Main{
     public static void main(String[] args) {
-        int[][] prerequisites = {{1,0}};      
+    int[] arr = {3,4,-3,-2,-4};
         july_challenge test = new july_challenge();
-        System.out.println(test.canFinish(2,prerequisites));
+        System.out.println(test.longestSubsequence(arr,-3));
     }
 }

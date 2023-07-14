@@ -617,4 +617,26 @@ public class july_challenge {
         }
         return false;
     }
+
+    //  14 July 2023
+    //Longest arithmetic subsequence of given difference
+    public int longestSubsequence(int[] arr, int difference) {
+        int SIZE = 20001;
+        int[] dp = new int[SIZE];
+        int max = 1;
+
+        for (int i : arr){
+            int index = i + 10000;
+            int k = index - difference;
+            if (k >= 0 && k < SIZE){
+                dp[index] = dp[k] + 1;
+                max = Math.max(max, dp[index]);
+            }
+            else{
+                dp[index] = 1;
+            }
+        }
+        
+        return max;
+    }
 }
