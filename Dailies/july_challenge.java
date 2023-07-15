@@ -639,4 +639,40 @@ public class july_challenge {
         
         return max;
     }
+
+    //  15 July 2023
+    //  Maximum number of events that can be attended II
+    public int maxValue(int[][] events, int k) {
+        int n = events.length;
+        int[][] dp = new int[k + 1][n + 1];
+        Arrays.sort(events, (a, b) -> a[0] - b[0]);
+
+        //  dp[count][index] shows the maximum value that can be obtained by attending 'count' number of events starting from index 'index' to the end of events array
+        for (int curIndex = n - 1; curIndex >= 0; curIndex--) {
+            for (int count = 1; count <= k; count++) {
+                int nextIndex = binarySearch(events, events[curIndex][1]);
+                //  We can either choose to take this event, which will be events[curIndex][2] + dp[count - 1][nextIndex]
+                //  OR
+                //  We can choose to not take this event, which will be dp[count][curIndex + 1] i.e move on to next event
+                dp[count][curIndex] = Math.max(dp[count][curIndex + 1], events[curIndex][2] + dp[count - 1][nextIndex]);
+            }
+        }
+        return dp[k][0];
+    }
+    
+    private int binarySearch(int[][] events, int target) {
+        //  Searches for closest event with start date greater than target
+        int left = 0;
+        int right = events.length;
+        while (left < right){
+            int mid = left + (right - left) / 2;
+            if (events[mid][0] <= target){
+                left = mid + 1;
+            }
+            else{
+                right = mid;
+            }
+        }
+        return left;
+    }
 }
