@@ -675,4 +675,53 @@ public class july_challenge {
         }
         return left;
     }
+
+    //  16 July 2023
+    //  Smallest sufficient team
+    public int[] smallestSufficientTeam(String[] req_skills, List<List<String>> people) {
+        int m = req_skills.length;
+        int n = people.size();
+
+        //  HashMap that maps each skill to a index
+        HashMap<String, Integer> skillMap = new HashMap<>();
+        for (int i = 0; i < m; i++){
+            skillMap.put(req_skills[i], i);
+        }
+
+        //  peopleSkillMap[i] shows the skills that person i has in terms of which bit is set
+        int[] peopleSkillMap = new int[n];
+        for (int i = 0; i < n; i++) {
+            for (String skill : people.get(i)) {
+                peopleSkillMap[i] |= 1 << skillMap.get(skill);
+            }
+        }
+
+        //  dp array to store results for all combinations of skills
+        long[] dp = new long[1 << m];
+        Arrays.fill(dp, Long.MAX_VALUE);
+        dp[0] = 0; // When no skills are required, no people are required
+
+        for (int i = 1; i < 1 << m; i++) { // Iterating through all combination of skill bit masks
+            for (int j = 0; j < n; j++) { // Iterating through all people
+                int skillsAlreadyPresent = i & ~peopleSkillMap[j]; //  Set of skills that the jth person don't have and thus need other people to have
+                if (skillsAlreadyPresent != i){ // E.g. if i = 1111 and people[i] have skill 0000, this means skillsAlreadyPresent = 1111, and so we don't need people[i]
+                    long peopleMask = dp[skillsAlreadyPresent] | (1L << j); //  People required for the current combination of skills
+                    if (Long.bitCount(peopleMask) < Long.bitCount(dp[i])){
+                        dp[i] = peopleMask;
+                    }
+                }
+            }
+        }
+
+        long answerBitMask = dp[(1 << m) - 1];
+        System.out.println(answerBitMask);
+        int ans[] = new int[Long.bitCount(answerBitMask)];
+        int index = 0;
+        for (int i = 0; i < n; i++) {
+            if (((answerBitMask >> i) & 1) == 1){
+                ans[index++] = i;
+            }
+        }
+        return ans;
+    }
 }
