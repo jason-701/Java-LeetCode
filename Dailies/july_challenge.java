@@ -724,4 +724,58 @@ public class july_challenge {
         }
         return ans;
     }
+
+    public class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
+
+    //  17 July 2023
+    //  Add two numbers II
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        l1 = reverseLinkedList(l1);
+        l2 = reverseLinkedList(l2);
+    
+        ListNode dummyHead = new ListNode(0);
+        ListNode current = dummyHead;
+        int carry = 0;
+    
+        while (l1 != null || l2 != null || carry != 0) {
+            int sum = carry;
+    
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+    
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+    
+            carry = sum / 10;
+            int digit = sum % 10;
+            current.next = new ListNode(digit);
+            current = current.next;
+        }
+    
+        return reverseLinkedList(dummyHead.next);
+    }
+    
+    private ListNode reverseLinkedList(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
+    
+        while (current != null) {
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
+    }
+    
 }
