@@ -777,5 +777,108 @@ public class july_challenge {
         }
         return prev;
     }
-    
+
+    //  18 July 2023
+    //  LRU cache
+    public class Node{
+        private int key;
+        private int val;
+        Node next;
+        Node prev;
+
+        public Node(int key, int val){
+            this.key = key;
+            this.val = val;
+        }
+    }
+    public class LinkedList{
+        private Node head;
+        private Node tail;
+
+        public void addToHead(Node node){
+            if (head != null){
+                node.next = head;
+                head.prev = node;
+            }
+            if (tail == null){
+                tail = node;
+            }
+            head = node;
+        }
+
+        public void unlink(Node node){
+            if (node == null){
+                return;
+            }
+            Node prevNode = node.prev;
+            Node nextNode = node.next;
+
+            if (prevNode != null){
+                prevNode.next = nextNode;
+            }
+            if (nextNode != null){
+                nextNode.prev = prevNode;
+            }
+            if (head == node){
+                head = nextNode;
+            }
+            if (tail == node){
+                tail = prevNode;
+            }
+            node.next = null;
+            node.prev = null;
+        }
+    }
+
+    class LRUCache {
+        public int capacity;
+        public HashMap<Integer, Node> cacheMap;
+        public LinkedList history;
+
+        public LRUCache(int capacity) {
+            this.capacity = capacity;;
+            cacheMap = new HashMap<>();
+            history = new LinkedList();
+        }
+        
+        public int get(int key) {
+            if (!cacheMap.containsKey(key)){
+                return -1;
+            }
+            Node node = cacheMap.get(key);
+            if (history.head != node){
+                history.unlink(node);
+                history.addToHead(node);
+            }     
+            return node.val;
+        }
+        
+        public void put(int key, int value) {
+            Node node = new Node(key, value);
+
+            if (cacheMap.containsKey(key)){
+                removeItem(cacheMap.get(key));
+            }
+
+            if (cacheMap.size() >= capacity){
+                removeOldest();
+            }
+
+            history.addToHead(node);
+            cacheMap.put(key, node);
+        }
+
+        public void removeOldest(){
+            Node node = history.tail;
+            if (node == null){
+                return;
+            }
+            removeItem(node);
+        }
+
+        public void removeItem(Node node){
+            history.unlink(node);
+            cacheMap.remove(node.key);
+        }
+    }
 }
