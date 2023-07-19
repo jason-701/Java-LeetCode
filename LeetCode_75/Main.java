@@ -3,8 +3,26 @@ import java.util.Map;
 
 public class Main{
     public static void main(String[] args) {
-        int[][] events = {{1,2,4},{3,4,3},{2,3,10}};
+        int[][] intervals = {{-52,31},{-73,-26},{82,97},{-65,-11},{-62,-49},{95,99},{58,95},{-31,49},{66,98},{-63,2},{30,47},{-40,-26}};
         july_challenge test = new july_challenge();
-        System.out.println(test.maxValue(events,2));
+        //System.out.println(convert("[[-52,31],[-73,-26],[82,97],[-65,-11],[-62,-49],[95,99],[58,95],[-31,49],[66,98],[-63,2],[30,47],[-40,-26]]"));
+        System.out.println(test.eraseOverlapIntervals(intervals));
+    }
+
+    //  function that converts square brackets to curly brackets
+    public static String convert(String str){
+        String result = "";
+        for(int i = 0; i < str.length(); i++){
+            if(str.charAt(i) == '['){
+                result += '{';
+            }
+            else if(str.charAt(i) == ']'){
+                result += '}';
+            }
+            else{
+                result += str.charAt(i);
+            }
+        }
+        return result;
     }
 }

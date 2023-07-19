@@ -881,4 +881,26 @@ public class july_challenge {
             cacheMap.remove(node.key);
         }
     }
+
+    //  19 July 2023
+    //  Non-overlapping intervals
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    
+        int count = 0;
+        int end = Integer.MIN_VALUE;
+    
+        for (int i = 0; i < intervals.length; i++) {
+            if (intervals[i][0] < end) {
+                // Current interval overlaps with the previous one
+                count++;
+                end = Math.min(end, intervals[i][1]); // Update the end to the smaller value, i.e remove the larger interval
+            } else {
+                // No overlap
+                end = intervals[i][1];
+            }
+        }
+    
+        return count;
+    }
 }
