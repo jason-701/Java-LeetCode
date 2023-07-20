@@ -903,4 +903,57 @@ public class july_challenge {
     
         return count;
     }
+
+    //  20 July 2023
+    //  Asteroid collision
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(asteroids[0]);
+
+        int firstAsteroid, secondAsteroid;
+        for (int i = 1; i < asteroids.length; i++) {
+            if (!stack.isEmpty()){
+                firstAsteroid = stack.pop();
+                secondAsteroid = asteroids[i];
+            }
+            else{
+                stack.push(asteroids[i]);
+                continue;
+            }
+            
+            //  While the 2 asteroids are colliding
+            while (firstAsteroid > 0 && secondAsteroid < 0 && !stack.isEmpty()){
+                if (Math.abs(firstAsteroid) == Math.abs(secondAsteroid)){ // equal size means both asteroids get destroyed
+                    break;
+                }
+                else{
+                    //  second asteroid is whatever remains from the collision
+                    secondAsteroid = Math.abs(firstAsteroid) > Math.abs(secondAsteroid) ? firstAsteroid : secondAsteroid;
+                    //  first asteroid is the next asteroid in the stack, which will be used to check if there is another collision
+                    firstAsteroid = stack.pop();
+                }
+            }
+            
+            //  If not colliding
+            if (firstAsteroid < 0 && secondAsteroid > 0 || firstAsteroid > 0 && secondAsteroid > 0 || firstAsteroid < 0 && secondAsteroid < 0){
+                stack.push(firstAsteroid);
+                stack.push(secondAsteroid);
+            }
+
+            //  If stack is empty and the 2 asteroids are colliding
+            else{
+                if (Math.abs(firstAsteroid) != Math.abs(secondAsteroid)){
+                    stack.push(Math.abs(firstAsteroid) > Math.abs(secondAsteroid) ? firstAsteroid : secondAsteroid);
+                }
+            }
+        }
+
+        int[] result = new int[stack.size()];
+        int i = result.length - 1;
+        while (!stack.isEmpty()){
+            result[i--] = stack.pop();
+        }
+
+        return result;
+    }
 }
