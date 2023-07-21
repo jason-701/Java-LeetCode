@@ -956,4 +956,47 @@ public class july_challenge {
 
         return result;
     }
+
+    //  21 July 2023
+    //  Number of longest increasing subsequence
+    public int findNumberOfLIS(int[] nums) {
+        int n = nums.length;
+
+        //  length[i] shows the length of the longest increasing subsequence that ends at index i
+        int[] length = new int[n];
+
+        //  count[i] shows the number of longest increasing subsequence that ends at index i
+        int[] count = new int[n];
+
+        Arrays.fill(length, 1);
+        Arrays.fill(count, 1);
+
+        for (int i = 1; i < n; i++) {
+            for (int j = i-1; j >= 0; j--) {
+                if (nums[i] > nums[j]){ // we can increase the length of the subsequence by 1
+                    if (length[i] < length[j] + 1){
+                        length[i] = length[j] + 1;
+                        count[i] = count[j];
+                    }
+                    else if (length[i] == length[j] + 1){
+                        count[i] += count[j];
+                    }
+                }
+            }
+        }
+
+        int maxLength = 0;
+        for (int i = 0; i < n; i++) {
+            maxLength = Math.max(maxLength, length[i]);
+        }
+        
+        int result = 0;
+        for (int i = 0; i < n; i++) {
+            if (length[i] == maxLength){
+                result += count[i];
+            }
+        }
+
+        return result;
+    }
 }

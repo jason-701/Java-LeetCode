@@ -3,10 +3,10 @@ import java.util.Map;
 
 public class Main{
     public static void main(String[] args) {
-        int[][] intervals = {{-52,31},{-73,-26},{82,97},{-65,-11},{-62,-49},{95,99},{58,95},{-31,49},{66,98},{-63,2},{30,47},{-40,-26}};
+        int[] nums = {1,1,1,2,2,2,3,3,3};
         july_challenge test = new july_challenge();
         //System.out.println(convert("[[-52,31],[-73,-26],[82,97],[-65,-11],[-62,-49],[95,99],[58,95],[-31,49],[66,98],[-63,2],[30,47],[-40,-26]]"));
-        System.out.println(test.eraseOverlapIntervals(intervals));
+        System.out.println(test.findNumberOfLIS(nums));
     }
 
     //  function that converts square brackets to curly brackets
