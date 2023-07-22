@@ -999,4 +999,81 @@ public class july_challenge {
 
         return result;
     }
+
+    //  22 July 2023
+    //  Knight probability in chessboard
+    public double knightProbability(int n, int k, int row, int column) {
+        double [][][] dp = new double[k+1][n][n];
+        for (int i = 0; i < k+1; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int j2 = 0; j2 < n; j2++) {
+                    dp[i][j][j2] = 0;
+                }
+            }
+        }
+        dp[0][row][column] = 1;
+
+        //  The idea is that the probability to move to a square is 1/8 the probability starting from the previous square
+        for (int i = 1; i < k + 1; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int y = 0; y < n; y++) {
+                    //  2 rows up
+                    if (j-2 >= 0){
+                        //  1 column left
+                        if (y-1 >= 0){
+                            dp[i][j][y] += (1/8.0) * dp[i-1][j-2][y-1];
+                        }
+                        //  1 column right
+                        if (y+1 < n){
+                            dp[i][j][y] += (1/8.0) * dp[i-1][j-2][y+1];
+                        }
+                    }
+
+                    //  2 rows down
+                    if (j+2 < n){
+                        //  1 column left
+                        if (y-1 >= 0){
+                            dp[i][j][y] += (1/8.0) * dp[i-1][j+2][y-1];
+                        }
+                        //  1 column right
+                        if (y+1 < n){
+                            dp[i][j][y] += (1/8.0) * dp[i-1][j+2][y+1];
+                        }
+                    }
+
+                    //  2 columns right
+                    if (y+2 < n){
+                        //  1 row up
+                        if (j-1 >= 0){
+                            dp[i][j][y] += (1/8.0) * dp[i-1][j-1][y+2];
+                        }
+                        //  1 row down
+                        if (j+1 < n){
+                            dp[i][j][y] += (1/8.0) * dp[i-1][j+1][y+2];
+                        }
+                    }
+
+                    //  2 columns left
+                    if (y-2 >= 0){
+                        //  1 row up
+                        if (j-1 >= 0){
+                            dp[i][j][y] += (1/8.0) * dp[i-1][j-1][y-2];
+                        }
+                        //  1 row down
+                        if (j+1 < n){
+                            dp[i][j][y] += (1/8.0) * dp[i-1][j+1][y-2];
+                        }
+                    }
+                }
+            }
+        }
+
+        double result = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                result += dp[k][i][j];
+            }
+        }
+        return result;
+    }
 }
