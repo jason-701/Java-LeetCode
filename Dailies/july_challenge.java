@@ -1076,4 +1076,48 @@ public class july_challenge {
         }
         return result;
     }
+
+    //  23 July 2023
+    //  All possible full binary trees
+    public List<TreeNode> allPossibleFBT(int n) {
+        HashMap<Integer, List<TreeNode>> memo = new HashMap<>();
+        return recursiveAllPossibleFBT(n, memo);
+    }
+
+    public List<TreeNode> recursiveAllPossibleFBT(int n, HashMap<Integer, List<TreeNode>> memo){
+        //  FBT = full binary tree, where all nodes have 0 or 2 child nodes
+        //  FBT need to have a odd number of nodes, inclusive of the root node
+
+        if (n%2 == 0){ // Not possible to have FBT with even number of nodes
+            return new ArrayList<TreeNode>();
+        }
+
+        if (n == 1){ // A tree with one node is a FBT
+            ArrayList<TreeNode> result = new ArrayList<TreeNode>();
+            result.add(new TreeNode());
+            return result;
+        }
+
+        if (memo.containsKey(n)){
+            return memo.get(n);
+        }
+
+        List<TreeNode> result = new ArrayList<TreeNode>();
+        for (int i = 1; i < n; i +=2){ // Split into the left subtree and right subtree. If the left tree has i nodes, the right tree will have n-i-1 nodes
+            List<TreeNode> leftSubtrees = recursiveAllPossibleFBT(i, memo);
+            List<TreeNode> rightSubtrees = recursiveAllPossibleFBT(n-i-1, memo);
+            for (TreeNode left : leftSubtrees){
+                for (TreeNode right : rightSubtrees){
+                    //  Rebuilt the tree from the root node
+                    TreeNode root = new TreeNode();
+                    root.left = left;
+                    root.right = right;
+                    result.add(root);
+                }
+            }
+        }
+
+        memo.put(n, result);
+        return result;
+    }
 }
