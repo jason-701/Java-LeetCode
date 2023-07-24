@@ -1120,4 +1120,35 @@ public class july_challenge {
         memo.put(n, result);
         return result;
     }
+
+    //  24 July 2023
+    //  Pow(x, n)
+    public double myPow(double x, int n) {
+        return myPowWithLong(x, (long)n);
+    }
+
+    //  We use long instead of int to take care of edge case where n = -2147483648
+    public double myPowWithLong(double x, long n){
+        if (x == 1){
+            return 1;
+        }
+        
+        if (n == 0){
+            return 1;
+        }
+
+        if (n < 0){
+            return 1 / myPowWithLong(x, -n);
+        }
+
+        //  Suppose we have 4^50, this is the same as (4 x 4)^25, which is the same as 4 x ((4 x 4)^2)^12, and so on
+        //  So we cut the power by half each time
+        if (n % 2 == 0){
+            return myPowWithLong(x*x, n/2);
+        }
+
+        else{
+            return x * myPowWithLong(x*x, (n-1)/2);
+        }
+    }
 }
