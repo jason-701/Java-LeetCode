@@ -1151,4 +1151,31 @@ public class july_challenge {
             return x * myPowWithLong(x*x, (n-1)/2);
         }
     }
+
+    //  25 July 2023
+    //  Peak index in a mountain array
+    public int peakIndexInMountainArray(int[] arr) {
+        int left = 0;
+        int right = arr.length - 1;
+        int mid;
+    
+        while (left < right) {
+            mid = left + (right - left) / 2;
+            
+            if (mid < arr.length - 1 && arr[mid] < arr[mid + 1]) {
+                // We are still in the increasing part of the array.
+                left = mid + 1;
+            } else if (mid > 0 && arr[mid] < arr[mid - 1]) {
+                // We are in the decreasing part of the array.
+                right = mid;
+            } else {
+                // We have found the peak element, or mid is at the boundary.
+                return mid;
+            }
+        }
+    
+        // When the loop ends, left and right will converge to the peak element.
+        return left;
+    }
+    
 }
