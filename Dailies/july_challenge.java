@@ -1177,5 +1177,41 @@ public class july_challenge {
         // When the loop ends, left and right will converge to the peak element.
         return left;
     }
+
+    //  26 July 2023
+    //  Minimum speed to arrive on time
+    public int minSpeedOnTime(int[] dist, double hour) {
+        int left = 0;
+        int right = 10000000;
+        int mid;
+        while (left < right){
+            mid = left + (right - left) / 2;
+            double time = timeRequired(dist, mid);
+            if (time > hour){
+                left = mid + 1;
+            }
+            else{
+                right = mid;
+            }
+        }
+        if (timeRequired(dist, left) <= hour){
+            return left;
+        }
+        return -1;
+    }
+
+    //  Function to calculate the time required
+    public double timeRequired(int[] dist, int speed){
+        double time = 0;
+        for (int i = 0; i < dist.length; i++) {
+            if (i == dist.length - 1){
+                time += (double)dist[i] / speed;
+            }
+            else{
+                time += Math.ceil((double)dist[i] / speed);
+            }
+        }
+        return time;
+    }
     
 }
