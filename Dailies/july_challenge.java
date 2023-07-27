@@ -1214,4 +1214,42 @@ public class july_challenge {
         return time;
     }
     
+    //  27 July 2023
+    //  maximum running time of N computers
+    public long maxRunTime(int n, int[] batteries) {
+        long sum = 0;
+        for (int i = 0; i < batteries.length; i++) {
+            sum += batteries[i];
+        }
+
+        long left = 1;
+        //  Upper bound happens when the batteries are spread out out equally among all computers, achieving maximum run time
+        long right = sum/n;
+
+        while (left < right){
+            long mid = right - (right - left) / 2;
+            if (canRunSimultaneously(n, batteries, mid)){
+                left = mid;
+            }
+            else{
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+
+    public boolean canRunSimultaneously(int n, int[] batteries, long time){
+        //  The idea is to find the total time required to run all computers for time t, and compare with the total power that the batteries can support
+        long totalTime = 0;
+        for (int i = 0; i < batteries.length; i++) {
+            if (batteries[i] < time){ // Battery has less power than target time
+                totalTime += batteries[i];
+            }
+            else{ // Battery has more power than target time
+                //  Extra power from a battery won'e be included since doing so will require that battery to be swapped, which cannot be done since it is in use
+                totalTime += time;
+            }
+        }
+        return totalTime >= time*n;
+    }
 }
