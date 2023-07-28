@@ -1252,4 +1252,26 @@ public class july_challenge {
         }
         return totalTime >= time*n;
     }
+
+    //  28 July 2023
+    //  Predict the winner
+    public boolean PredictTheWinner(int[] nums) {
+        int n = nums.length;
+        int[][] dp = new int[n][n];
+
+        //  dp[i][j] represents the maximum difference between player 1 and player 2 when the subarray is nums[i:j]
+        //  Base case: dp[i][i] = nums[i], since when nums has only one number, the max difference is the number itself
+        for (int i = 0; i < dp.length; i++) {
+            dp[i][i] = nums[i];
+        }
+
+        for (int diff = 1; diff < n; diff++) {
+            for (int i = 0; i < n - diff; i++) {
+                int j = i + diff;
+                dp[i][j] = Math.max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1]);
+            }
+        }
+
+        return dp[0][n-1] >= 0;
+    }
 }
