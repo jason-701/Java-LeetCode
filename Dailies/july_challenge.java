@@ -1274,4 +1274,43 @@ public class july_challenge {
 
         return dp[0][n-1] >= 0;
     }
+
+    //  29 July 2023
+    //  Soup servings
+    public double soupServings(int n) {
+        if (n >= 4800){ // Apparently when n is over 4800, the probability is extremely close to 1
+            return 1;
+        }
+
+        HashMap<String, Double> memo = new HashMap<>();
+
+        return soupServingsHelper(n, n, memo);
+    }
+
+    public double soupServingsHelper(int a, int b, HashMap<String, Double> memo){
+        if (a <= 0 && b<= 0){
+            return 0.5;
+        }
+
+        if (a <= 0){
+            return 1;
+        }
+
+        if (b <= 0){
+            return 0;
+        }
+
+        String key = a + "," + b;
+        if (memo.containsKey(key)){
+            return memo.get(key);
+        }
+
+        double p1 = 0.25 * soupServingsHelper(a-100, b, memo);
+        double p2 = 0.25 * soupServingsHelper(a-75, b-25, memo);
+        double p3 = 0.25 * soupServingsHelper(a-50, b-50, memo);
+        double p4 = 0.25 * soupServingsHelper(a-25, b-75, memo);
+
+        memo.put(key, p1 + p2 + p3 + p4);
+        return memo.get(key);
+    }
 }
