@@ -1313,4 +1313,31 @@ public class july_challenge {
         memo.put(key, p1 + p2 + p3 + p4);
         return memo.get(key);
     }
+
+    //  30 July 2023
+    //  Strange printer, btw i don't get this question at all this is the provided solution
+    public int strangePrinter(String s) {
+        int n = s.length();
+        int[][] dp = new int[n][n];
+
+        for (int length = 1; length <= n; length++) {
+            for (int left = 0; left <= n - length; left++) {
+                int right = left + length - 1;
+                int j = -1;
+                dp[left][right] = n;
+                for (int i = left; i < right; i++) {
+                    if (s.charAt(i) != s.charAt(right) && j == -1){
+                        j = i;
+                    }
+                    if (j != -1){
+                        dp[left][right] = Math.min(dp[left][right], dp[j][i] + dp[i+1][right] + 1);
+                    }
+                }
+                if (j == -1){
+                    dp[left][right] = 0;
+                }
+            }
+        }
+        return dp[0][n-1] + 1;
+    }
 }
