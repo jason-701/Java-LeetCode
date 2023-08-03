@@ -47,6 +47,38 @@ class Solution(object):
                 self.permuteBacktracking(nums, result, temp)
                 temp.pop()
         
-    
+    #   3 August 2023
+    #   Letter combinations of a phone number
+    def letterCombinations(self, digits):
+        """
+        :type digits: str
+        :rtype: List[str]
+        """
+        if len(digits)==0:
+            return []
+        numberMapping = {
+            2 : "abc",
+            3 : "def",
+            4 : "ghi",
+            5 : "jkl",
+            6 : "mno",
+            7 : "pqrs",
+            8 : "tuv",
+            9 : "wxyz"
+        }
+        result = []
+        self.letterCombinationsBacktracking(digits, numberMapping, 0, result, "")
+        return result
+        
+    def letterCombinationsBacktracking(self, digits, numberMapping, index, result, temp):
+        if len(temp)==len(digits):
+            result.append(temp[:])
+            return
+        
+        for i in range(index, len(digits)):
+            for j in range(len(numberMapping[int(digits[i])])):
+                temp += numberMapping[int(digits[i])][j]
+                self.letterCombinationsBacktracking(digits, numberMapping, i+1, result, temp)
+                temp = temp[:-1]
 test = Solution()
-print(test.permute([1,2,3]))
+print(test.letterCombinations("23"))
