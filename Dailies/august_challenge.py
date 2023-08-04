@@ -1,28 +1,26 @@
 class Solution(object):
-    
     #   1 August 2023
     #   Combinations
     def combineBackTracking(self, n, k, index, result, temp):
-        
-        if len(temp)==k:
+        if len(temp) == k:
             result.append(temp[:])
             return
-        
-        for i in range(index, n+1):
+
+        for i in range(index, n + 1):
             temp.append(i)
-            self.combineBackTracking(n, k, i+1, result, temp)
+            self.combineBackTracking(n, k, i + 1, result, temp)
             temp.pop()
-    
+
     def combine(self, n, k):
         """
         :type n: int
         :type k: int
         :rtype: List[List[int]]
         """
-        result=[]
+        result = []
         self.combineBackTracking(n, k, 1, result, [])
         return result
-    
+
     #   2 August 2023
     #   Permuations
     def permute(self, nums):
@@ -33,20 +31,19 @@ class Solution(object):
         result = []
         self.permuteBacktracking(nums, result, [])
         return result
-        
+
     def permuteBacktracking(self, nums, result, temp):
-            
-            if len(temp)==len(nums):
-                result.append(temp[:])
-                return
-            
-            for i in range(len(nums)):
-                if nums[i] in temp:
-                    continue
-                temp.append(nums[i])
-                self.permuteBacktracking(nums, result, temp)
-                temp.pop()
-        
+        if len(temp) == len(nums):
+            result.append(temp[:])
+            return
+
+        for i in range(len(nums)):
+            if nums[i] in temp:
+                continue
+            temp.append(nums[i])
+            self.permuteBacktracking(nums, result, temp)
+            temp.pop()
+
     #   3 August 2023
     #   Letter combinations of a phone number
     def letterCombinations(self, digits):
@@ -54,31 +51,58 @@ class Solution(object):
         :type digits: str
         :rtype: List[str]
         """
-        if len(digits)==0:
+        if len(digits) == 0:
             return []
         numberMapping = {
-            2 : "abc",
-            3 : "def",
-            4 : "ghi",
-            5 : "jkl",
-            6 : "mno",
-            7 : "pqrs",
-            8 : "tuv",
-            9 : "wxyz"
+            2: "abc",
+            3: "def",
+            4: "ghi",
+            5: "jkl",
+            6: "mno",
+            7: "pqrs",
+            8: "tuv",
+            9: "wxyz",
         }
         result = []
         self.letterCombinationsBacktracking(digits, numberMapping, 0, result, "")
         return result
-        
-    def letterCombinationsBacktracking(self, digits, numberMapping, index, result, temp):
-        if len(temp)==len(digits):
+
+    def letterCombinationsBacktracking(
+        self, digits, numberMapping, index, result, temp
+    ):
+        if len(temp) == len(digits):
             result.append(temp[:])
             return
-        
+
         for i in range(index, len(digits)):
             for j in range(len(numberMapping[int(digits[i])])):
                 temp += numberMapping[int(digits[i])][j]
-                self.letterCombinationsBacktracking(digits, numberMapping, i+1, result, temp)
+                self.letterCombinationsBacktracking(
+                    digits, numberMapping, i + 1, result, temp
+                )
                 temp = temp[:-1]
+
+    #   4 August 2023
+    #   Word break
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        #   Here is the intuition: from the beginning of the string to index i, and a certain index j that is between 0 ad i,
+        #   if str[:j] is true and str[j:i] is in the wordDict, then dp[i] is True
+        #   E.g. "leetcodedaily", wordDict = ["leet", "code", "daily"]
+        #   suppose we're processing until the "e" in "code", i = 8, and when j = 4, dp[4] is True and "code" is in the wordDict, hence dp[i] is true
+        strLen = len(s) + 1
+        dp = [False] * strLen
+        dp[0] = True
+        for i in range(1, strLen):
+            for j in range(i):
+                if dp[j] and s[j:i] in wordDict:
+                    dp[i] = True
+        return dp[-1]
+
+
 test = Solution()
-print(test.letterCombinations("23"))
+print(test.wordBreak("leetcode", ["leet", "code"]))
