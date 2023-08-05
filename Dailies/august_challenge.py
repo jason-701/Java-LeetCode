@@ -103,6 +103,36 @@ class Solution(object):
                     dp[i] = True
         return dp[-1]
 
+    #   5 August 2023
+    #   Unique binary search trees II
+    class TreeNode(object):
+        def __init__(self, val=0, left=None, right=None):
+            self.val = val
+            self.left = left
+            self.right = right
+
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[TreeNode]
+        """
+        return self.generateTreesHelper(1, n)
+
+    def generateTreesHelper(self, start, end):
+        if start > end:
+            return [None]
+        result = []
+        for i in range(start, end + 1):
+            left = self.generateTreesHelper(start, i - 1)
+            right = self.generateTreesHelper(i + 1, end)
+            for l in left:
+                for r in right:
+                    root = self.TreeNode(i)
+                    root.left = l
+                    root.right = r
+                    result.append(root)
+        return result
+
 
 test = Solution()
-print(test.wordBreak("leetcode", ["leet", "code"]))
+print(test.generateTrees(3))
