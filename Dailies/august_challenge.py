@@ -133,6 +133,30 @@ class Solution(object):
                     result.append(root)
         return result
 
+    #   6 August 2023
+    #   Number of music playlists
+    def numMusicPlaylists(self, n, goal, k):
+        """
+        :type n: int
+        :type goal: int
+        :type k: int
+        :rtype: int
+        """
+        #   dp[i][j] represents the number of playlists of length i that have exactly j unique songs
+        #   Base case: dp[0][0] = 1
+        #   All i < j = 0 since there's less slots than the number of songs
+        dp = [[0] * (n + 1) for i in range(goal + 1)]
+        dp[0][0] = 1
+        for i in range(1, goal + 1):
+            for j in range(1, n + 1):
+                #   dp[i-1][j-1] used to calculate the number of choices with a new song, hence n-(j-1)
+                #   dp[i-1][j] used to calculate the number of choices with an old song
+                #   but the constraint mentions each song can only repeat every k other songs, hence max(j-k, 0)
+                dp[i][j] += dp[i - 1][j - 1] * (n - (j - 1)) + dp[i - 1][j] * max(
+                    j - k, 0
+                )
+        return dp[goal][n] % (10**9 + 7)
+
 
 test = Solution()
-print(test.generateTrees(3))
+print(test.numMusicPlaylists(3, 3, 1))
