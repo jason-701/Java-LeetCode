@@ -157,6 +157,30 @@ class Solution(object):
                 )
         return dp[goal][n] % (10**9 + 7)
 
+    #   7 August 2023
+    #   Search a 2D matrix
+    def searchMatrix(self, matrix, target):
+        #   I copied the solution because I didn't have any time to do it
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if not matrix:
+            return False
+        m, n = len(matrix), len(matrix[0])
+        left, right = 0, m * n - 1
+        while left <= right:
+            mid = (left + right) // 2
+            mid_row, mid_col = divmod(mid, n)
+            if matrix[mid_row][mid_col] == target:
+                return True
+            elif matrix[mid_row][mid_col] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+
 
 test = Solution()
 print(test.numMusicPlaylists(3, 3, 1))
