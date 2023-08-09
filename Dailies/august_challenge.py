@@ -212,6 +212,35 @@ class Solution(object):
         else:
             return -1
 
+    #   9 August 2023
+    #   Minimize tha maximum difference of pairs
+    def minimizeMax(self, nums, p):
+        """
+        :type nums: List[int]
+        :type p: int
+        :rtype: int
+        """
+
+        nums.sort()
+        left = 0
+        right = nums[-1]
+        while left < right:
+            mid = (left + right) // 2
+            count = 0
+            i = 0
+            while i < len(nums) - 1:
+                if abs(nums[i] - nums[i + 1]) <= mid:
+                    count += 1
+                    i += 2
+                else:
+                    i += 1
+            if count >= p:
+                right = mid
+            else:
+                left = mid + 1
+        return left
+
 
 test = Solution()
-print(test.numMusicPlaylists(3, 3, 1))
+arr = [3, 3, 5, 1, 0, 5, 6, 6]
+print(test.minimizeMax(arr, 4))
