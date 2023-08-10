@@ -189,6 +189,7 @@ class Solution(object):
         :type target: int
         :rtype: int
         """
+        #   Key idea is that when we split the array into two halves, one half will always be sorted, so we check if target is in the sorted half
         left = 0
         right = len(nums) - 1
         while left < right:
@@ -240,7 +241,40 @@ class Solution(object):
                 left = mid + 1
         return left
 
+    #   10 August 2023
+    #   Search in rotated sorted array II
+    def search(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: bool
+        """
+        #   similar to the search function on Aug 8th, except we have to check for duplicates
+        if len(nums) == 1:
+            return nums[0] == target
+
+        left = 0
+        right = len(nums) - 1
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] == target:
+                return True
+            if nums[mid] == nums[right] and nums[left] == nums[mid]:
+                right -= 1
+                left += 1
+            elif nums[mid] >= nums[left]:
+                if nums[left] <= target <= nums[mid]:
+                    right = mid
+                else:
+                    left = mid + 1
+            else:
+                if nums[mid] <= target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid
+        return nums[left] == target
+
 
 test = Solution()
-arr = [3, 3, 5, 1, 0, 5, 6, 6]
-print(test.minimizeMax(arr, 4))
+arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1]
+print(test.search(arr, 2))
