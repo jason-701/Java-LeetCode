@@ -274,7 +274,38 @@ class Solution(object):
                     right = mid
         return nums[left] == target
 
+    #   11 August 2023
+    #   Coin change II
+    def change(self, amount, coins):
+        """
+        :type amount: int
+        :type coins: List[int]
+        :rtype: int
+        """
+        #   Sort coins array so that if coins[i] > amount, we can break out of the loop
+        coins.sort()
+
+        #   dp[i][j] where i represents what coin is in use and j represents the amount remaining
+        dp = [[0] * (amount + 1) for i in range(len(coins))]
+        for i in range(len(coins)):
+            dp[i][0] = 1
+
+        for i in range(len(coins)):
+            if coins[i] > amount:
+                return dp[i - 1][amount]
+            for j in range(1, amount + 1):
+                #   dp[coin][amount] = dp[prev coin][amount] + dp[coin][amount - coin]
+                if i != 0:
+                    if coins[i] <= j:
+                        dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i]]
+                    else:
+                        dp[i][j] = dp[i - 1][j]
+                else:
+                    dp[i][j] = dp[i][j - coins[i]]
+
+        return dp[len(coins) - 1][amount]
+
 
 test = Solution()
-arr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1]
-print(test.search(arr, 2))
+arr = [2, 7, 13]
+print(test.change(500, arr))
