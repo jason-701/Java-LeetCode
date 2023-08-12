@@ -305,7 +305,36 @@ class Solution(object):
 
         return dp[len(coins) - 1][amount]
 
+    #   12 August 2023
+    #   Unique paths II
+    def uniquePathsWithObstacles(self, obstacleGrid):
+        """
+        :type obstacleGrid: List[List[int]]
+        :rtype: int
+        """
+        rows = len(obstacleGrid)
+        columns = len(obstacleGrid[0])
+        dp = [[0] * columns for i in range(rows)]
+        if obstacleGrid[0][0] != 1:
+            dp[0][0] = 1
+        #   dp[i][j] represents the number of ways to reach obstacleGrid[i][j], which is dp[i-1][j] + dp[i][j-1], but have to check for obstacles
+        for i in range(rows):
+            for j in range(columns):
+                if i == 0 and j == 0:
+                    continue
+                if obstacleGrid[i][j] == 1:
+                    dp[i][j] = 0
+                elif i != 0 and j != 0:
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+                elif (
+                    i == 0
+                ):  #  We're at row 0, so there is no moving up to a previous grid
+                    dp[i][j] = dp[i][j - 1]
+                else:  #   We're at column 0, so there is no moving left to a previous grid
+                    dp[i][j] = dp[i - 1][j]
+        return dp[-1][-1]
+
 
 test = Solution()
-arr = [2, 7, 13]
-print(test.change(500, arr))
+arr = [[0, 0]]
+print(test.uniquePathsWithObstacles(arr))
