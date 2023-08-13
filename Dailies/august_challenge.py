@@ -334,7 +334,45 @@ class Solution(object):
                     dp[i][j] = dp[i - 1][j]
         return dp[-1][-1]
 
+    #   13 August 2023
+    #   Check if there is a valid partition for the array
+    def validPartition(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        dp = [False] * len(nums)
+
+        for i in range(1, len(dp)):
+            if (
+                i > 3
+            ):  # Check for all possibilities of a valid partition. E.g [1,1,1,1,2,3], at the last element (i = 5), we see that [1,2,3] is valid, and dp[2] is True, so dp[i] is True
+                dp[i] = (
+                    (nums[i - 2] == nums[i - 1] == nums[i] and dp[i - 3])
+                    or (nums[i - 1] == nums[i] and dp[i - 2])
+                    or (
+                        nums[i - 2] + 1 == nums[i - 1]
+                        and nums[i - 1] + 1 == nums[i]
+                        and dp[i - 3]
+                    )
+                )
+            elif (
+                i == 3
+            ):  #  When there are 4 elements, only way of partitioning is divide it into 2 equal parts
+                dp[i] = nums[i - 1] == nums[i] and dp[i - 2]
+            elif (
+                i == 2
+            ):  #  When there are 3 elements, check whether they are increments of 1 or 3 duplicates, which will both be valid partitions
+                dp[i] = (
+                    nums[i - 2] == nums[i - 1] == nums[i]
+                    or nums[i - 2] + 1 == nums[i - 1]
+                    and nums[i - 1] + 1 == nums[i]
+                )
+            else:  # When there are 2 elements, check whether they are 2 duplicates, which will be a valid partition
+                dp[i] = nums[i - 1] == nums[i]
+        return dp[-1]
+
 
 test = Solution()
-arr = [[0, 0]]
-print(test.uniquePathsWithObstacles(arr))
+arr = [1, 3, 3]
+print(test.validPartition(arr))
