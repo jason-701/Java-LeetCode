@@ -1,3 +1,6 @@
+import heapq
+
+
 class Solution(object):
     #   1 August 2023
     #   Combinations
@@ -372,7 +375,47 @@ class Solution(object):
                 dp[i] = nums[i - 1] == nums[i]
         return dp[-1]
 
+    #   14 Aug 2023
+    #   Kth largest element in an array
+    # def findKthLargest(self, nums, k):
+    #     """
+    #     :type nums: List[int]
+    #     :type k: int
+    #     :rtype: int
+    #     """
+    #     return self.quickSortModified(nums, 0, len(nums) - 1, len(nums) - k)
+
+    # def quickSortModified(self, nums, low, high, targetIndex):
+    #     index = self.partition(nums, low, high)
+    #     if index == targetIndex:
+    #         return nums[index]
+    #     elif index < targetIndex:
+    #         return self.quickSortModified(nums, index + 1, high, targetIndex)
+    #     else:
+    #         return self.quickSortModified(nums, low, index - 1, targetIndex)
+
+    # def partition(self, nums, low, high):
+    #     pivot = nums[high]
+    #     i = low - 1
+    #     for j in range(low, high):
+    #         if nums[j] <= pivot:
+    #             i += 1
+    #             (nums[i], nums[j]) = (nums[j], nums[i])
+    #     (nums[i + 1], nums[high]) = (nums[high], nums[i + 1])
+    #     return i + 1
+
+    #   Turns out you can just use the built in min heap
+    #   Keep adding elements into the heap and put when heap size exceed the target
+    def findKthLargest(self, nums, k):
+        heap = []
+        for num in nums:
+            heapq.heappush(heap, num)
+            if len(heap) > k:
+                heapq.heappop(heap)
+
+        return heap[0]
+
 
 test = Solution()
-arr = [1, 3, 3]
-print(test.validPartition(arr))
+arr = [3, 2, 1, 5, 6, 4]
+print(test.findKthLargest(arr, 2))
