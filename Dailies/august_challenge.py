@@ -415,6 +415,44 @@ class Solution(object):
 
         return heap[0]
 
+    #   15 Aug 2023
+    #   Partition list
+    class ListNode(object):
+        def __init__(self, val=0, next=None):
+            self.val = val
+            self.next = next
+
+    def partition(self, head, x):
+        """
+        :type head: ListNode
+        :type x: int
+        :rtype: ListNode
+        """
+
+        resultList = self.ListNode()
+        resultListHead = resultList
+
+        curr = head
+        prev = None
+
+        while curr:
+            if curr.val < x:
+                resultList.next = curr
+                resultList = resultList.next
+
+                #   Remove the node from the original list
+                if prev:
+                    prev.next = curr.next
+                else:
+                    head = head.next
+                curr = curr.next
+            else:
+                prev = curr
+                curr = curr.next
+
+        resultList.next = head
+        return resultListHead.next
+
 
 test = Solution()
 arr = [3, 2, 1, 5, 6, 4]
