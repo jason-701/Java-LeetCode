@@ -1,4 +1,5 @@
 import heapq
+import collections
 
 
 class Solution(object):
@@ -453,7 +454,36 @@ class Solution(object):
         resultList.next = head
         return resultListHead.next
 
+    #   16 Aug 2023
+    #   Sliding window maximum
+    def maxSlidingWindow(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+
+        #   Use a double ended queue to store the INDEX, not the actual value
+        queue = collections.deque()
+        result = []
+
+        for i in range(len(nums)):
+            #   remove indices of of range
+            while queue and queue[0] < i - k + 1:
+                queue.popleft()
+
+            #   removes indices with value less than the newly added number
+            while queue and nums[queue[-1]] < nums[i]:
+                queue.pop()
+
+            queue.append(i)
+
+            if i >= k - 1:
+                result.append(nums[queue[0]])
+
+        return result
+
 
 test = Solution()
-arr = [3, 2, 1, 5, 6, 4]
-print(test.findKthLargest(arr, 2))
+arr = [1, 3, -1, -3, 5, 3, 6, 7]
+print(test.maxSlidingWindow(arr, 3))
