@@ -478,6 +478,7 @@ class Solution(object):
 
             queue.append(i)
 
+            #   The max number will always be at the left end of the queue
             if i >= k - 1:
                 result.append(nums[queue[0]])
 
