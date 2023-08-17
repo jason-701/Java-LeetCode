@@ -484,7 +484,62 @@ class Solution(object):
 
         return result
 
+    #   17 Aug 2023
+    #   01 matrix
+    def updateMatrix(self, mat):
+        """
+        :type mat: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        rows = len(mat)
+        columns = len(mat[0])
+        visited = [[0] * columns for _ in range(rows)]
+        dp = [[10000] * columns for _ in range(rows)]
+        queue = []
+        for i in range(rows):
+            for j in range(columns):
+                if mat[i][j] == 0:
+                    dp[i][j] = 0
+                    queue.append([i, j])
+        while len(queue) != 0:
+            curr = queue.pop(0)
+            currRow = curr[0]
+            currColumn = curr[1]
+            if visited[currRow][currColumn] == 1:
+                continue
+            else:
+                visited[currRow][currColumn] = 1
+                #   Up one row
+                if currRow > 0 and visited[currRow - 1][currColumn] != 1:
+                    dp[currRow - 1][currColumn] = min(
+                        dp[currRow][currColumn] + 1, dp[currRow - 1][currColumn]
+                    )
+                    queue.append([currRow - 1, currColumn])
+
+                #   Down one row
+                if currRow < rows - 1 and visited[currRow + 1][currColumn] != 1:
+                    dp[currRow + 1][currColumn] = min(
+                        dp[currRow][currColumn] + 1, dp[currRow + 1][currColumn]
+                    )
+                    queue.append([currRow + 1, currColumn])
+
+                #   Left column
+                if currColumn > 0 and visited[currRow][currColumn - 1] != 1:
+                    dp[currRow][currColumn - 1] = min(
+                        dp[currRow][currColumn] + 1, dp[currRow][currColumn - 1]
+                    )
+                    queue.append([currRow, currColumn - 1])
+
+                #   Right column
+                if currColumn < columns - 1 and visited[currRow][currColumn + 1] != 1:
+                    dp[currRow][currColumn + 1] = min(
+                        dp[currRow][currColumn] + 1, dp[currRow][currColumn + 1]
+                    )
+
+                    queue.append([currRow, currColumn + 1])
+        return dp
+
 
 test = Solution()
-arr = [1, 3, -1, -3, 5, 3, 6, 7]
-print(test.maxSlidingWindow(arr, 3))
+arr = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+print(test.updateMatrix(arr))
