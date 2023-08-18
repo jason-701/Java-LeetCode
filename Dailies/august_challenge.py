@@ -538,8 +538,33 @@ class Solution(object):
 
                     queue.append([currRow, currColumn + 1])
         return dp
+    
+    #   18 Aug 2023
+    #   Maximal network rank
+    def maximalNetworkRank(self, n: int, roads: list[list[int]]) -> int:
+        adjMatrix = [[0]*n for _ in range(n)]
+
+        for (x,y) in roads:
+            adjMatrix[x][y] = 1
+            adjMatrix[y][x] = 1
+
+        degree = []
+        for i in range(n):
+            count = 0
+            for j in range(n):
+                count += adjMatrix[i][j]
+            degree.append(count)
+
+        maxCount = 0
+        for i in range(n):
+            for j in range(i+1,n):
+                totalDegree = degree[i] + degree[j]
+                if [i,j] in roads or [j,i] in roads:
+                    totalDegree -= 1
+                maxCount = max(maxCount, totalDegree)
+        return maxCount
 
 
 test = Solution()
-arr = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
-print(test.updateMatrix(arr))
+arr = [[0,1],[1,2],[2,3],[2,4],[5,6],[5,7]]
+print(test.maximalNetworkRank(8,arr))
