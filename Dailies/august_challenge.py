@@ -538,13 +538,13 @@ class Solution(object):
 
                     queue.append([currRow, currColumn + 1])
         return dp
-    
+
     #   18 Aug 2023
     #   Maximal network rank
     def maximalNetworkRank(self, n: int, roads: list[list[int]]) -> int:
-        adjMatrix = [[0]*n for _ in range(n)]
+        adjMatrix = [[0] * n for _ in range(n)]
 
-        for (x,y) in roads:
+        for x, y in roads:
             adjMatrix[x][y] = 1
             adjMatrix[y][x] = 1
 
@@ -557,14 +557,97 @@ class Solution(object):
 
         maxCount = 0
         for i in range(n):
-            for j in range(i+1,n):
+            for j in range(i + 1, n):
                 totalDegree = degree[i] + degree[j]
-                if [i,j] in roads or [j,i] in roads:
+                if [i, j] in roads or [j, i] in roads:
                     totalDegree -= 1
                 maxCount = max(maxCount, totalDegree)
         return maxCount
 
+    #   19 Aug 2023
+    #   Find critical and pseudo-critical edges in minimum spanning tree
+    #   This code is mostly copilot and referring to online solutions
+    def findCriticalAndPseudoCriticalEdges(self, n, edges):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        original_edges = [(u, v, w, i) for i, (u, v, w) in enumerate(edges)]
+        original_edges.sort(key=lambda x: x[2])
+        result = self.kruskalMST(n, original_edges)
+        weight = 0
+        for edge in result:
+            weight += edge[2]
+        critical = []
+        pseudoCritical = []
+
+        for i in range(len(original_edges)):
+            # Check if edge is critical
+            tempEdges = original_edges[:i] + original_edges[i + 1 :]
+            newMST = self.kruskalMST(n, tempEdges)
+            if self.getGraphWeight(newMST) != weight:
+                critical.append(original_edges[i][3])
+            else:
+                # Check if edge is pseudo-critical
+                newMSTWithEdge = self.kruskalIncludingEdge(
+                    n, original_edges, original_edges[i]
+                )
+                if self.getGraphWeight(newMSTWithEdge) == weight:
+                    pseudoCritical.append(original_edges[i][3])
+
+        return [critical, pseudoCritical]
+
+    def getGraphWeight(self, edges):
+        weight = 0
+        for edge in edges:
+            weight += edge[2]
+        return weight
+
+    def kruskalMST(self, n, edges):
+        edges.sort(key=lambda x: x[2])
+        parent = [i for i in range(n)]
+        rank = [0] * n
+        result = []
+        for edge in edges:
+            if self.union(edge[0], edge[1], parent, rank):
+                result.append(edge)
+        return result
+
+    def kruskalIncludingEdge(self, n, edges, givenEdge):
+        #   Generate a MST that has to include the given edge
+        edges.sort(key=lambda x: x[2])
+        parent = [i for i in range(n)]
+        rank = [0] * n
+        result = [givenEdge]
+        self.union(givenEdge[0], givenEdge[1], parent, rank)
+        for edge in edges:
+            if edge == givenEdge:
+                continue
+            if self.union(edge[0], edge[1], parent, rank):
+                result.append(edge)
+        return result
+
+    def union(self, x, y, parent, rank):
+        xRoot = self.find(x, parent)
+        yRoot = self.find(y, parent)
+        if xRoot == yRoot:
+            return False
+        if rank[xRoot] < rank[yRoot]:
+            parent[xRoot] = yRoot
+        elif rank[yRoot] < rank[xRoot]:
+            parent[yRoot] = xRoot
+        else:
+            parent[yRoot] = xRoot
+            rank[xRoot] += 1
+        return True
+
+    def find(self, x, parent):
+        if parent[x] != x:
+            parent[x] = self.find(parent[x], parent)
+        return parent[x]
+
 
 test = Solution()
-arr = [[0,1],[1,2],[2,3],[2,4],[5,6],[5,7]]
-print(test.maximalNetworkRank(8,arr))
+arr = [[0, 1, 1], [1, 2, 1], [2, 3, 2], [0, 3, 2], [0, 4, 3], [3, 4, 3], [1, 4, 6]]
+print(test.findCriticalAndPseudoCriticalEdges(5, arr))
