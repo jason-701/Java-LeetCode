@@ -709,7 +709,31 @@ class Solution(object):
             answer += ordered_groups[group_index]
         return answer
 
+    #   21 Aug 2023
+    #   Repeated substring pattern
+    def repeatedSubstringPattern(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        #   Brute force
+        for i in range(1, len(s) // 2 + 1):
+            if len(s) % i != 0:
+                continue
+
+            subStr = s[:i]
+            print("Substring: " + subStr)
+            isSame = True
+            for i in range(0, len(s), len(subStr)):
+                if subStr != s[i : i + len(subStr)]:
+                    isSame = False
+
+            if isSame:
+                return True
+
+        return False
+
 
 test = Solution()
-arr = [[0, 1, 1], [1, 2, 1], [2, 3, 2], [0, 3, 2], [0, 4, 3], [3, 4, 3], [1, 4, 6]]
-print(test.findCriticalAndPseudoCriticalEdges(5, arr))
+arr = "abcabcabc"
+print(test.repeatedSubstringPattern(arr))
