@@ -733,7 +733,23 @@ class Solution(object):
 
         return False
 
+    #   22 Aug 2023
+    #   Excel sheet column title
+    def convertToTitle(self, columnNumber):
+        """
+        :type columnNumber: int
+        :rtype: str
+        """
+        num = columnNumber - 1
+        result = ""
+        while num >= 0:
+            result = (chr)((num % 26) + 65) + result
+            num = num // 26
+            num -= 1
+
+        return result
+
 
 test = Solution()
 arr = "abcabcabc"
-print(test.repeatedSubstringPattern(arr))
+print(test.convertToTitle(701))

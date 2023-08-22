@@ -1,4 +1,4 @@
-if coins[i] <= j:
-                    #     dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i]]
-                    # else:
-                    #     dp[i][j] = dp[1 - i][j]
+        # i = len(remainderArr) - 1
+        # while i >= 0:
+        #     result += (chr)(remainderArr[i] + 65)
+        #     i -= 1
