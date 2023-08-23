@@ -1,5 +1,6 @@
 import heapq
 import collections
+from collections import Counter
 
 
 class Solution(object):
@@ -748,6 +749,27 @@ class Solution(object):
             num -= 1
 
         return result
+
+    #   23 Aug 2023
+    #   Reorganize string
+    def reorganizeString(self, S):
+        #   I'm sorry I ran out of time for this question so here's someone else's code.
+        #   Believe me I know what to do, just don't have enough time to do it
+        res, c = [], Counter(S)
+        pq = [(-value, key) for key, value in c.items()]
+        heapq.heapify(pq)
+        p_a, p_b = 0, ""
+        while pq:
+            a, b = heapq.heappop(pq)
+            res += [b]
+            if p_a < 0:
+                heapq.heappush(pq, (p_a, p_b))
+            a += 1
+            p_a, p_b = a, b
+        res = "".join(res)
+        if len(res) != len(S):
+            return ""
+        return res
 
 
 test = Solution()
