@@ -771,7 +771,43 @@ class Solution(object):
             return ""
         return res
 
+    #   24 Aug 2023
+    #   Text justification
+    def fullJustify(self, words: list[str], maxWidth: int) -> list[str]:
+        result = []
+        i = 0
+
+        while i < len(words):
+            line_length = len(words[i])
+            j = i + 1
+
+            while j < len(words) and line_length + len(words[j]) + (j - i) <= maxWidth:
+                line_length += len(words[j])
+                j += 1
+
+            num_words = j - i
+            num_spaces = maxWidth - line_length
+
+            if num_words == 1 or j == len(words):
+                result.append(
+                    " ".join(words[i:j]) + " " * (num_spaces - (num_words - 1))
+                )
+            else:
+                spaces_between_words = num_spaces // (num_words - 1)
+                extra_spaces = num_spaces % (num_words - 1)
+
+                justified_line = words[i]
+                for k in range(1, num_words):
+                    spaces = spaces_between_words + (1 if k <= extra_spaces else 0)
+                    justified_line += " " * spaces + words[i + k]
+
+                result.append(justified_line)
+
+            i = j
+
+        return result
+
 
 test = Solution()
-arr = "abcabcabc"
-print(test.convertToTitle(701))
+arr = ["This", "is", "an", "example", "of", "text", "justification."]
+print(test.fullJustify(arr, 16))
