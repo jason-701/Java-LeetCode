@@ -834,7 +834,19 @@ class Solution(object):
                 )
         return dp[-1][-1]
 
+    #   26 Aug 2023
+    #   Maximum length of pair chain
+    def findLongestChain(self, pairs: list[list[int]]) -> int:
+        sorted_arr = sorted(pairs, key=lambda x: x[0])
+        arrLen = len(sorted_arr)
+        dp = [1] * arrLen
+        for i in range(1, arrLen):
+            for j in range(i):
+                if sorted_arr[i][0] > sorted_arr[j][1]:
+                    dp[i] = max(dp[i], dp[j] + 1)
+        return dp[-1]
+
 
 test = Solution()
-arr = ["This", "is", "an", "example", "of", "text", "justification."]
-print(test.isInterleave("", "", "a"))
+arr = [[1, 2], [2, 3], [3, 4]]
+print(test.findLongestChain(arr))
