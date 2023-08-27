@@ -852,15 +852,15 @@ class Solution(object):
         arrLen = len(stones)
         dp = [[False] * (arrLen + 1) for _ in range(arrLen)]
 
-        #   Can always jump from 0 to the first stone
         dp[0][0] = True
 
+        #   dp[i][j] represents the possibility to jump to index i with jump length j
         for i in range(len(stones)):
             for j in range(i + 1, len(stones)):
                 diff = stones[j] - stones[i]
                 if (
                     diff <= j
-                ):  # The jump length should not exceed the stone index difference
+                ):  # Given that each jump can only increase by a max of 1, if the jump is greater than the desired index j, it will be impossible to achieve
                     # Check if we can reach the current stone from a previous stone with the jump length diff
                     dp[j][diff] = dp[i][diff - 1] or dp[i][diff] or dp[i][diff + 1]
 
