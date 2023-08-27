@@ -846,7 +846,31 @@ class Solution(object):
                     dp[i] = max(dp[i], dp[j] + 1)
         return dp[-1]
 
+    #   27 Aug 2023
+    #   Frog jump
+    def canCross(self, stones: list[int]) -> bool:
+        arrLen = len(stones)
+        dp = [[False] * (arrLen + 1) for _ in range(arrLen)]
+
+        #   Can always jump from 0 to the first stone
+        dp[0][0] = True
+
+        for i in range(len(stones)):
+            for j in range(i + 1, len(stones)):
+                diff = stones[j] - stones[i]
+                if (
+                    diff <= j
+                ):  # The jump length should not exceed the stone index difference
+                    # Check if we can reach the current stone from a previous stone with the jump length diff
+                    dp[j][diff] = dp[i][diff - 1] or dp[i][diff] or dp[i][diff + 1]
+
+                    # If we can reach the last stone, return True
+                    if j == len(stones) - 1 and dp[j][diff]:
+                        return True
+
+        return False
+
 
 test = Solution()
-arr = [[1, 2], [2, 3], [3, 4]]
-print(test.findLongestChain(arr))
+arr = [0, 1, 3, 5, 6, 8, 12, 17]
+print(test.canCross(arr))
