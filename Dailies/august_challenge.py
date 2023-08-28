@@ -1,6 +1,7 @@
 import heapq
 import collections
 from collections import Counter
+import queue
 
 
 class Solution(object):
@@ -869,6 +870,28 @@ class Solution(object):
                         return True
 
         return False
+
+    #   28 Aug 2023
+    #   Implement stack using queues
+    class MyStack:
+        def __init__(self):
+            self.q = collections.deque()
+
+        def push(self, x: int) -> None:
+            #   Append from the end and rotate the whole queue until it appears at the front
+            q = self.q
+            q.append(x)
+            for i in range(len(q) - 1):
+                q.append(q.popLeft())
+
+        def pop(self) -> int:
+            return self.q.popLeft()
+
+        def top(self) -> int:
+            return self.q[0]
+
+        def empty(self) -> bool:
+            return len(self.q) == 0
 
 
 test = Solution()
