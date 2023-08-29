@@ -893,7 +893,39 @@ class Solution(object):
         def empty(self) -> bool:
             return len(self.q) == 0
 
+    #   29 Aug 2023
+    #   Minimum penalty for a shop
+    def bestClosingTime(self, customers: str) -> int:
+        customerLen = len(customers)
+        NFromLeft = [0] * (customerLen + 1)
+        YFromRight = [0] * (customerLen + 1)
+
+        count = 0
+        for i in range(1, customerLen + 1):
+            if customers[i - 1] == "N":
+                count += 1
+            NFromLeft[i] = count
+
+        count = 0
+        for i in range(customerLen - 1, -1, -1):
+            if customers[i] == "Y":
+                count += 1
+            YFromRight[i] = count
+
+        #   At any given hour, the penalty that the shop will have is equal to how many empty hours are there before that plus how many customer hours there are after that
+        sum = [0] * (customerLen + 1)
+        for i in range(customerLen + 1):
+            sum[i] = NFromLeft[i] + YFromRight[i]
+
+        index = 0
+        curMin = 100000
+        for i in range(customerLen + 1):
+            if sum[i] < curMin:
+                curMin = sum[i]
+                index = i
+        return index
+
 
 test = Solution()
-arr = [0, 1, 3, 5, 6, 8, 12, 17]
-print(test.canCross(arr))
+arr = "YYYY"
+print(test.bestClosingTime(arr))
