@@ -925,7 +925,25 @@ class Solution(object):
                 index = i
         return index
 
+    #   30 Aug 2023
+    #   Minimum replacements to sort the array
+    def minimumReplacement(self, nums: list[int]) -> int:
+        n = len(nums)
+        last = nums[n - 1]
+        count = 0
+        for i in range(n - 2, -1, -1):
+            if nums[i] > last:
+                #   If the current number is greater, calculate how many times it will have to be divided by the last number become less than or equal to it
+                div = nums[i] // last
+                if nums[i] % last:
+                    div += 1
+                last = nums[i] // div
+                count += div - 1
+            else:
+                last = nums[i]
+        return count
+
 
 test = Solution()
-arr = "YYYY"
-print(test.bestClosingTime(arr))
+arr = [7, 6, 15, 6, 11, 14, 10]
+print(test.minimumReplacement(arr))

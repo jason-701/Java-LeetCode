@@ -1,4 +1,6 @@
-        # i = len(remainderArr) - 1
-        # while i >= 0:
-        #     result += (chr)(remainderArr[i] + 65)
-        #     i -= 1
+            print(
+                "The 2 numbers for comparison are: "
+                + str(nums[i])
+                + " and "
+                + str(nums[i + 1])
+            )
