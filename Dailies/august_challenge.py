@@ -943,7 +943,27 @@ class Solution(object):
                 last = nums[i]
         return count
 
+    #   31 Aug 2023
+    #   Minimum number of taps to open to water a garden
+    def minTaps(self, n: int, ranges: list[int]) -> int:
+        coverage = []
+        for i in range(len(ranges)):
+            coverage.append([i - ranges[i], i + ranges[i]])
+
+        #   dp[i] shows how many taps are needed to water up to index i
+        dp = [int(1e9)] * (n + 1)
+        dp[0] = 0
+
+        for i in range(n + 1):
+            start = max(0, coverage[i][0])
+            end = min(n, coverage[i][1])
+            for j in range(start, end + 1):
+                dp[j] = min(dp[j], dp[start] + 1)
+        if dp[n] == int(1e9):
+            return -1
+        return dp[n]
+
 
 test = Solution()
-arr = [7, 6, 15, 6, 11, 14, 10]
-print(test.minimumReplacement(arr))
+arr = [3, 4, 1, 1, 0, 0]
+print(test.minTaps(5, arr))
