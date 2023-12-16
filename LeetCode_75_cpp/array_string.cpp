@@ -1,4 +1,5 @@
 #include <iostream>
+#include <numeric>
 using namespace std;
 
 class Solution {
@@ -28,13 +29,39 @@ public:
 
         return res;
     }
+
+//  16 Dec 2023
+    string gcdOfStrings(string str1, string str2) {
+        //  The length of the greatest common divisor has to the same as the gcd between the lengths of the 2 strings
+        int len = gcd(str1.length(),str2.length());
+        string res;
+        for (int i = 0; i < len; i++)
+        {
+            if (str1[i] != str2[i])
+            {
+                return "";
+            }
+            res += str1[i];
+        }
+
+        string test = str1 + str2;
+        for (int i = 0; i < test.length(); i += len)
+        {
+            if (test.substr(i,len) != res)
+            {
+                return "";
+            }
+        }
+        return res;
+
+    }
 };
 
 int main(int argc, char *argv[]){
     Solution solution;
-    string word1 = "ab";
-    string word2 = "pqrs";
-    string result = solution.mergeAlternately(word1, word2);
-    cout << "Merged String: " << result << endl;
+    string str1 = "ABCABC";
+    string str2 = "ABC";
+    string res = solution.gcdOfStrings(str1,str2);
+    cout << "result: " << res << endl;
     return 0;
 }
