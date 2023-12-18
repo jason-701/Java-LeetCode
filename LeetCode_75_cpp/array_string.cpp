@@ -1,5 +1,6 @@
 #include <iostream>
 #include <numeric>
+#include <vector>
 using namespace std;
 
 class Solution {
@@ -54,6 +55,32 @@ public:
         }
         return res;
 
+    }
+
+//  18 Dec 2023
+    vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
+        vector<bool> res;
+
+        int max = 0;
+        for (int &candy : candies)
+        {
+            if (candy > max)
+            {
+                max = candy;
+            }
+        }
+
+        for (int &candy : candies)
+        {
+            if (candy+extraCandies >= max)
+            {
+                res.push_back(true);
+            }
+            else {
+                res.push_back(false);
+            }
+        }
+        return res;
     }
 };
 
