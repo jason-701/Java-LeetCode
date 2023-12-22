@@ -201,12 +201,66 @@ public:
         }
         return s;
     }
+
+//  22 Dec 2023
+    string reverseWords(string s) {
+        if (s.length() == 1) {
+            return s;
+        }
+
+        std::string res;
+        int end = static_cast<int>(s.length()) - 1;
+
+        // Skip trailing spaces
+        while (end >= 0 && s[static_cast<size_t>(end)] == ' ') {
+            end--;
+        }
+
+        int start = end;
+
+        while (start >= 0) {
+            // Find the start of the word
+            while (start >= 0 && s[static_cast<size_t>(start)] != ' ') {
+                start--;
+            }
+
+            // Check for underflow before using start + 1
+            if (start >= 0) {
+                // Append the word to the result
+                res += s.substr(static_cast<size_t>(start + 1), static_cast<size_t>(end - start));
+                // Append a space
+                res += ' ';
+            }
+            if (start == -1)
+            {
+                cout << end << endl;
+                res += s.substr(0,end+2);
+            }
+
+            // Move to the next word
+            end = start;
+
+            // Skip trailing spaces
+            while (end >= 0 && s[static_cast<size_t>(end)] == ' ') {
+                end--;
+            }
+
+            start = end;
+        }
+
+        // Remove the trailing space before returning
+        while (res[res.length()-1]==' ')
+        {
+            res = res.substr(0,res.length()-1);
+        }
+        return res;
+    }
 };
 
 int main(int argc, char *argv[]){
     Solution solution;
-    string s = "leetcode";
-    string res = solution.reverseVowels(s);
+    string s = "EPY2giL";
+    string res = solution.reverseWords(s);
     cout << "result: " << res << endl;
     return 0;
 }
