@@ -2,6 +2,7 @@
 #include <numeric>
 #include <vector>
 #include <cmath>
+#include <set>
 using namespace std;
 
 class Solution {
@@ -169,12 +170,43 @@ public:
             return false;
         }
     }
+
+//  22 Dec 2023
+    string reverseVowels(string s) {
+        if (s.length()==1)
+        {
+            return s;
+        }
+        set<char> vowels = {'a','e','i','o','u','A','E','I','O','U'};
+        int left = 0;
+        int right = s.length()-1;
+        char temp;
+        while (left<right)
+        {
+            if (vowels.count(s[left])==0)
+            {
+                left++;
+                continue;
+            }
+            if (vowels.count(s[right])==0)
+            {
+                right--;
+                continue;
+            }
+            temp = s[left];
+            s[left]=s[right];
+            s[right]=temp;
+            left++;
+            right--;
+        }
+        return s;
+    }
 };
 
 int main(int argc, char *argv[]){
     Solution solution;
-    vector<int> flowerbed = {1,0,0,0,0,0,0,1};
-    int res = solution.canPlaceFlowers(flowerbed,2);
+    string s = "leetcode";
+    string res = solution.reverseVowels(s);
     cout << "result: " << res << endl;
     return 0;
 }
