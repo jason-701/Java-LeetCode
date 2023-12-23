@@ -255,12 +255,48 @@ public:
         }
         return res;
     }
+
+//  23 Dec 2023
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int size = nums.size();
+
+        //  Array of product of numbers to the left of current index
+        int leftProduct[size];
+        leftProduct[0] = 1;
+        
+        //  Array of product of numbers to the right of current index
+        int rightProduct[size];
+        rightProduct[size-1] = 1;
+        
+
+        for (int i = 1; i < nums.size(); i++)
+        {
+            leftProduct[i] = leftProduct[i-1]*nums[i-1];
+        }
+
+        for (int i = size-2; i >= 0; i--)
+        {
+            rightProduct[i] = rightProduct[i+1]*nums[i+1];
+        }
+        
+        vector<int> res;
+        for (int i = 0; i < size; i++)
+        {
+            res.push_back(leftProduct[i]*rightProduct[i]);
+        }
+        return res;
+
+    }
 };
 
 int main(int argc, char *argv[]){
     Solution solution;
-    string s = "EPY2giL";
-    string res = solution.reverseWords(s);
-    cout << "result: " << res << endl;
+    vector<int> test ={1,2,3,4,5};
+    vector<int> res = solution.productExceptSelf(test);
+    // cout << "result: " << res << endl;
+    for (int &num : res)
+    {
+        cout << num << "   ";
+    }
     return 0;
 }
