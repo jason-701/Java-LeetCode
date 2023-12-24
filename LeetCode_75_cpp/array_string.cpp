@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include <set>
+#include <limits.h>
 using namespace std;
 
 class Solution {
@@ -286,6 +287,29 @@ public:
         }
         return res;
 
+    }
+
+//  24 Dec 2023
+    bool increasingTriplet(vector<int>& nums) {
+        int A = nums[0];
+        int B = INT_MAX;
+        int C = INT_MAX;
+        for (int &num : nums)
+        {
+            if (num < A)
+            {
+                A = num;
+            }
+            if (num > A && num < B)
+            {
+                B = num;
+            }
+            if (num > B)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 };
 
