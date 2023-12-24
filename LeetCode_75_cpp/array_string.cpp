@@ -311,16 +311,39 @@ public:
         }
         return false;
     }
+
+//  24 Dec 2023
+    int compress(vector<char>& chars) {
+        int index = 0;
+        for (int i = 0; i < chars.size();)
+        {
+            const char curChar = chars[i];
+            int count = 0;
+
+            while (i < chars.size() && chars[i] == curChar)
+            {
+                ++count;
+                ++i;
+            }
+
+            chars[index++] = curChar;
+            if (count > 1)
+            {
+                for (const char c : to_string(count))
+                {
+                    chars[index++] = c;
+                }
+            }
+        }
+        return index;
+    }
 };
 
 int main(int argc, char *argv[]){
     Solution solution;
     vector<int> test ={1,2,3,4,5};
-    vector<int> res = solution.productExceptSelf(test);
+    vector<char> chars = {'a','b','b','b','b','b','b','b','b','b','b','b','b'};
+    int res = solution.compress(chars);
     // cout << "result: " << res << endl;
-    for (int &num : res)
-    {
-        cout << num << "   ";
-    }
     return 0;
 }
