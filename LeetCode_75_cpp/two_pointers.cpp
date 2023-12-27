@@ -53,13 +53,38 @@ public:
        }
        return true;
     }
+
+//  27 Dec 2023
+    int maxArea(vector<int>& height) {
+        int leftPointer = 0;
+        int rightPointer = height.size()-1;
+        int curMax = 0;
+        int temp = 0;
+    
+        while (leftPointer < rightPointer)
+        {
+            temp = (rightPointer - leftPointer) * min(height[leftPointer],height[rightPointer]);
+            if (temp > curMax)
+            {
+                curMax = temp;
+            }
+            if (height[leftPointer] < height[rightPointer])
+            {
+                leftPointer++;
+            }
+            else
+            {
+                rightPointer--;
+            }
+        }
+        return curMax;
+    }
 };
 
 int main(int argc, char *argv[]){
     Solution solution;
-    string s = "abc";
-    string t = "addbioc";
-    bool res = solution.isSubsequence(s,t);
+    vector<int> height = {1,1};
+    int res = solution.maxArea(height);
     cout << "result: " << res << endl;
     return 0;
 }
