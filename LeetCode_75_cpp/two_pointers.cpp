@@ -24,16 +24,42 @@ public:
             nums[index++] = 0;
         }
     }   
+
+//  27 Dec 2023
+    bool isSubsequence(string s, string t) {
+       //   Whether s is a subsequence of t
+       
+       if (s.length() > t.length())
+       {
+        return false;
+       }
+
+       int sPointer, tPointer;
+       sPointer = tPointer = 0;
+
+       while (sPointer < s.length())
+       {
+            if (s[sPointer] ==t[tPointer])
+            {
+                sPointer++;
+            }
+
+            tPointer++;
+
+            if (tPointer > t.length())
+            {
+                return false;
+            }
+       }
+       return true;
+    }
 };
 
 int main(int argc, char *argv[]){
     Solution solution;
-    vector<int> test ={1,0,0};
-    solution.moveZeroes(test);
-    for (int i : test)
-    {
-        cout << i << ' ';
-    }
-    // cout << "result: " << res << endl;
+    string s = "abc";
+    string t = "addbioc";
+    bool res = solution.isSubsequence(s,t);
+    cout << "result: " << res << endl;
     return 0;
 }
