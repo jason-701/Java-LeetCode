@@ -4,6 +4,7 @@
 #include <cmath>
 #include <set>
 #include <limits.h>
+#include <unordered_map>
 using namespace std;
 
 class Solution {
@@ -79,12 +80,39 @@ public:
         }
         return curMax;
     }
+
+//  29 Dec 2023
+    int maxOperations(vector<int>& nums, int k) {
+        unordered_map<int,int> numCount;
+        for (auto num : nums)
+        {
+            numCount[num]++;
+        }
+
+        int res = 0;
+        for (auto num : nums)
+        {
+            int remainder = k - num;
+            if (num != remainder)
+            {
+                res += min(numCount[num],numCount[remainder]);
+                numCount[num] = 0;
+                numCount[remainder] = 0;
+            }
+            else
+            {
+                res += numCount[num]/2;
+                numCount[num] = 0;
+            }
+        }
+        return res;
+    }
 };
 
 int main(int argc, char *argv[]){
     Solution solution;
-    vector<int> height = {1,1};
-    int res = solution.maxArea(height);
+    vector<int> nums = {1,2,3,4};
+    int res = solution.maxOperations(nums,6);
     cout << "result: " << res << endl;
     return 0;
 }
